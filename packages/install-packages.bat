@@ -59,15 +59,31 @@ for /f "usebackq delims=" %%a in ("%PACKAGES_FILE%") do (
     )
     
     echo %GREEN%Installing: !line!%NC%
+    
+    winget show --id="!line!" --exact >nul 2>&1
+    if !errorlevel! neq 0 (
+        echo %RED%  ✗ Package not found: !line!%NC%
+        echo %YELLOW%    Tip: Search with: winget search "!line!"
+        set /a "FAILED+=1"
+        goto :continue_install
+    )
+    
     winget install --id="!line!" --exact --silent --accept-source-agreements --accept-package-agreements
     
     if !errorlevel! equ 0 (
         echo %GREEN%  ✓ Successfully installed !line!%NC%
         set /a "INSTALLED+=1"
     ) else (
-        echo %YELLOW%  ✗ Failed to install !line! (may already be installed)%NC%
+        winget list --id="!line!" --exact >nul 2>&1
+        if !errorlevel! equ 0 (
+            echo %YELLOW%  ⚠ Already installed: !line!%NC%
+        ) else (
+            echo %RED%  ✗ Failed to install: !line!%NC%
+        )
         set /a "FAILED+=1"
     )
+    
+    :continue_install
     echo.
     
     :continue
