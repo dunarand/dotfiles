@@ -27,6 +27,7 @@ return {
 				"markdown_oxide", -- Markdown
 				"texlab", -- LaTeX
 				"ltex", -- Grammar/spell checking (Markdown & LaTeX)
+                "bashls", -- Bash
 			},
 			automatic_installation = true,
 		})
@@ -38,6 +39,7 @@ return {
 			"sql-formatter", -- SQL
 			"prettier", -- JS/TS/CSS/HTML/JSON/YAML/Markdown
 			"latexindent", -- LaTeX
+            "shfmt", -- Bash
 		}
 
 		for _, formatter in ipairs(formatters) do
