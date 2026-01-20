@@ -5,10 +5,6 @@ BurntSushi.ripgrep.MSVC
 ajeetdsouza.zoxide
 ClementTsang.bottom
 
-# === Web Browsers ===
-# Zen Browser - not available on winget yet, install manually from https://zen-browser.app
-Google.Chrome
-
 # === Communication & Social ===
 Discord.Discord
 Spotify.Spotify
@@ -21,13 +17,12 @@ EpicGames.EpicGamesLauncher
 
 # === System Utilities ===
 Microsoft.PowerToys
-NVIDIAApp.NVIDIAApp
+Nvidia.GeForceExperience
 7zip.7zip
 
 # === Media & Productivity ===
 VideoLAN.VLC
 TheDocumentFoundation.LibreOffice
-# OpenShot - not available on winget, install manually from https://www.openshot.org
 
 # === System Monitoring & Benchmarking ===
 CPUID.CPU-Z
@@ -35,11 +30,17 @@ TechPowerUp.GPU-Z
 CrystalDewWorld.CrystalDiskMark
 CrystalDewWorld.CrystalDiskInfo
 REALiX.HWiNFO
-# AMD Ryzen Master - not on winget, download from AMD website
-# FurMark - not on winget, download from https://www.geeks3d.com/furmark/
-# Cinebench - not on winget, download from Maxon website
-# OCCT - not on winget, download from https://www.ocbase.com
 
 # === File Sharing & Remote Desktop ===
 LocalSend.LocalSend
 RustDesk.RustDesk
+
+# ============================================
+# MANUAL INSTALLATION REQUIRED (not on winget)
+# ============================================
+# Zen Browser - https://zen-browser.app
+# OpenShot Video Editor - https://www.openshot.org
+# AMD Ryzen Master - https://www.amd.com/en/technologies/ryzen-master
+# FurMark - https://www.geeks3d.com/furmark/
+# Cinebench - https://www.maxon.net/en/cinebench
+# OCCT - https://www.ocbase.com
