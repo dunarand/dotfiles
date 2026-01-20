@@ -13,7 +13,14 @@ return {
 				json = { "prettier" },
 				jsonc = { "prettier" },
 				yaml = { "prettier" },
+				markdown = { "prettier" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				javascriptreact = { "prettier" },
+				typescriptreact = { "prettier" },
 				toml = { "taplo" },
+				sh = { "shfmt" },
+				bash = { "shfmt" },
 			},
 			formatters = {
 				ruff_organize_imports = {
@@ -33,12 +40,12 @@ return {
 				ruff_format = {
 					command = "ruff",
 					args = {
-					    "format",
-					    "--line-length",
-					    "80",
-					    "--stdin-filename",
-					    "$FILENAME",
-					    "-"
+						"format",
+						"--line-length",
+						"80",
+						"--stdin-filename",
+						"$FILENAME",
+						"-",
 					},
 				},
 				ruff_autofix = {
@@ -59,10 +66,35 @@ return {
 					command = "sql-formatter",
 					args = { "--language", "sql" },
 				},
+				shfmt = {
+					prepend_args = { "-i", "2", "-bn", "-ci", "-sr" },
+				},
+				prettier = {
+					prepend_args = {
+						"--tab-width",
+						"2",
+						"--use-tabs",
+						"false",
+						"--single-quote",
+						"false",
+						"--trailing-comma",
+						"es5",
+						"--print-width",
+						"80",
+					},
+				},
+				taplo = {
+					args = {
+						"format",
+						"--option",
+						"indent_string=  ",
+						"--option",
+						"column_width=80",
+						"-",
+					},
+				},
 			},
 		})
-
-		-- Manual format keybinding
 		vim.keymap.set({ "n", "v" }, "<leader>f", function()
 			require("conform").format({
 				lsp_fallback = true,
