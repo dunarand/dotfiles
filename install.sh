@@ -14,18 +14,18 @@ echo -e "${GREEN}Installing dotfiles from ${DOTFILES_DIR}${NC}"
 create_symlink() {
     local source=$1
     local target=$2
-    
+
     mkdir -p "$(dirname "$target")"
-    
+
     if [ -e "$target" ] && [ ! -L "$target" ]; then
         echo -e "${YELLOW}Backing up existing $target to $target.backup${NC}"
         mv "$target" "$target.backup"
     fi
-    
+
     if [ -L "$target" ]; then
         rm "$target"
     fi
-    
+
     ln -s "$source" "$target"
     echo -e "${GREEN}✓${NC} Linked $source -> $target"
 }
