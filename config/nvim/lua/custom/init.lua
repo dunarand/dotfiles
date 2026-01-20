@@ -1,0 +1,7 @@
+require("custom.diag-signs").setup()
+require("custom.pynb-newline").setup()
+require("custom.project-dirs").setup()
+require("custom.run-py").setup()
+require("custom.smart-split").setup()
+require("custom.soft-wrap").setup()
+require("custom.switch-boolean").setup()
