@@ -11,7 +11,7 @@ function M.apply_to_config(config)
 		top = 10,
 		bottom = 10,
 	}
-	config.window_decorations = "RESIZE"
+	config.window_decorations = "TITLE | RESIZE"
 
 	config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular" })
 	config.font_size = 10.0
