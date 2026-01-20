@@ -74,20 +74,20 @@ if in_array "$OS" "${ARCH_DISTROS[@]}"; then
     sudo pacman -Syu --noconfirm
 
     if [ -f "$PACKAGES_DIR/$OS.txt" ]; then
-        install_from_file "$PACKAGES_DIR/$OS.txt" "sudo pacman -S --needed --noconfirm"
+        install_from_file "$PACKAGES_DIR/$OS.txt" "sudo pacman -S --needed"
     elif [ -f "$PACKAGES_DIR/arch.txt" ]; then
-        install_from_file "$PACKAGES_DIR/arch.txt" "sudo pacman -S --needed --noconfirm"
+        install_from_file "$PACKAGES_DIR/arch.txt" "sudo pacman -S --needed"
     fi
 
     if command -v yay &> /dev/null; then
         if [ -f "$PACKAGES_DIR/aur.txt" ]; then
             echo -e "${BLUE}Installing AUR packages...${NC}"
-            install_from_file "$PACKAGES_DIR/aur.txt" "yay -S --needed --noconfirm"
+            install_from_file "$PACKAGES_DIR/aur.txt" "yay -S --needed"
         fi
     elif command -v paru &> /dev/null; then
         if [ -f "$PACKAGES_DIR/aur.txt" ]; then
             echo -e "${BLUE}Installing AUR packages...${NC}"
-            install_from_file "$PACKAGES_DIR/aur.txt" "paru -S --needed --noconfirm"
+            install_from_file "$PACKAGES_DIR/aur.txt" "paru -S --needed"
         fi
     else
         echo -e "${YELLOW}No AUR helper found (yay/paru). Skipping AUR packages.${NC}"
