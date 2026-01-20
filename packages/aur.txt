@@ -1,9 +1,6 @@
 # === Useful Tools ===
-AUR helper
-yay-bin
-
-# === Terminal Emulators ===
-ghostty-bin
+# AUR helper
+# yay-bin
 
 # === IDEs & Development Tools ===
 visual-studio-code-bin

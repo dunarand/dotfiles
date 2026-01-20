@@ -12,6 +12,7 @@ neovim
 # === Terminal & Shell Tools ===
 tmux
 wezterm
+ghostty
 bat
 bottom
 fzf
@@ -37,19 +38,12 @@ cargo
 # Zig
 zig
 
-# Java
-jdk-openjdk
-jre-openjdk
-maven
-gradle
-
 # Lua
 lua
 luarocks
 
 # === Database Tools ===
 sqlitebrowser
-harlequin
 
 # === Package Managers ===
 # cargo (installed with rustup)
