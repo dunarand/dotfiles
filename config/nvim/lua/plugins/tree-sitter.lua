@@ -16,6 +16,7 @@ return {
 				"json",
 				"toml",
 				"yaml",
+                "bash",
 			},
 			sync_install = false,
 			auto_install = true,
