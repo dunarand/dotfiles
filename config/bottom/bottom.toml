@@ -1,0 +1,55 @@
+[flags]
+
+hide_avg_cpu = true
+rate = 1000
+cpu_left_legend = false
+current_usage = false
+group_processes = true
+case_sensitive = false
+whole_word = false
+regex = false
+temperature_type = "c"
+default_time_value = "60s"
+process_memory_as_value = true
+retention = "5m"
+
+[processes]
+
+columns = ["PID", "Name", "CPU%", "Mem%", "GPU%", "GMem%", "Time", "Rps", "Wps", "TRead", "TWrite"]
+
+[cpu]
+
+default = "all"
+
+[disk]
+
+columns = ["Mount", "Used%", "R/s", "W/s"]
+
+[styles]
+theme = "nord"
+
+[[row]]
+  ratio=34
+  [[row.child]]
+  type="cpu"
+[[row]]
+    ratio=33
+    [[row.child]]
+      ratio=1
+      type="mem"
+    [[row.child]]
+      type="net"
+      ratio=1
+    
+[[row]]
+  ratio=33
+  [[row.child]]
+  ratio=1
+    [[row.child.child]]
+      type="temp"
+    [[row.child.child]]
+      type="disk"
+  [[row.child]]
+    type="proc"
+    default=true
+    ratio=4
