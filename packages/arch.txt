@@ -1,0 +1,15 @@
+# Dev tools
+git
+neovim
+tmux
+
+# Terminal
+ghostty
+
+# System utils
+bottom
+fzf
+zoxide
+
+# Programming Languages / Package managers
+npm
