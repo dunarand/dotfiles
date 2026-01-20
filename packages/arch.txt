@@ -1,15 +1,88 @@
-# Dev tools
+# === Core Development Tools ===
 git
+base-devel
+cmake
+make
+gcc
+gdb
+
+# === Text Editors & IDEs ===
 neovim
+
+# === Terminal & Shell Tools ===
 tmux
-
-# Terminal
-ghostty
-
-# System utils
+wezterm
+bat
 bottom
 fzf
+ripgrep
 zoxide
+lazygit
 
-# Programming Languages / Package managers
+# === Programming Languages ===
+# Python
+python
+python-pip
+python-virtualenv
+python-pipx
+
+# Node.js
+nodejs
 npm
+
+# Rust
+rustup
+cargo
+
+# Zig
+zig
+
+# Java
+jdk-openjdk
+jre-openjdk
+maven
+gradle
+
+# Lua
+lua
+luarocks
+
+# === Database Tools ===
+sqlitebrowser
+harlequin
+
+# === Package Managers ===
+# cargo (installed with rustup)
+# npm (installed with nodejs)
+# pip (installed with python)
+# luarocks (Lua package manager)
+
+# === Media & Video ===
+vlc
+mpv
+
+# === Office & Productivity ===
+libreoffice-fresh
+
+# === LaTeX ===
+texlive-basic
+texlive-bin
+texlive-binextra
+texlive-latex
+texlive-latexextra
+texlive-latexrecommended
+texlive-fontsrecommended
+texlive-fontsextra
+texlive-mathscience
+texlive-publishers
+texlive-pictures
+biber
+texstudio
+
+# === System Utilities ===
+wget
+curl
+unzip
+zip
+p7zip
+htop

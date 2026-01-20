@@ -1,0 +1,37 @@
+# === Useful Tools ===
+AUR helper
+yay-bin
+
+# === Terminal Emulators ===
+ghostty-bin
+
+# === IDEs & Development Tools ===
+visual-studio-code-bin
+pycharm-community-edition
+
+# === Database Tools ===
+dbeaver
+tad-bin
+
+# === Video Editing ===
+openshot
+
+# === Remote Desktop & File Sharing ===
+rustdesk-bin
+localsend-bin
+
+# === Note Taking ===
+obsidian
+
+# === Markdown Editors ===
+marktext-bin
+
+# === Web Browsers ===
+zen-browser-bin
+
+# === Gaming ===
+steam
+
+# === Communication ===
+discord
+spotify
