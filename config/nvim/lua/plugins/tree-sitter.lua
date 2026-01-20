@@ -1,5 +1,12 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	dependencies = {
+		{
+			"nvim-treesitter/nvim-treesitter-textobjects",
+            branch = "master",
+		},
+	},
+    branch = "master",
 	build = ":TSUpdate",
 	event = { "BufReadPost", "BufNewFile" },
 	config = function()
@@ -16,7 +23,7 @@ return {
 				"json",
 				"toml",
 				"yaml",
-                "bash",
+				"bash",
 			},
 			sync_install = false,
 			auto_install = true,
@@ -45,6 +52,18 @@ return {
 					node_decremental = "<BS>",
 				},
 			},
+			textobjects = {
+				select = {
+					enable = true,
+					lookahead = true,
+					keymaps = {
+						["af"] = "@function.outer",
+						["if"] = "@function.inner",
+						["ac"] = "@class.outer",
+						["ic"] = "@class.inner",
+					},
+				},
+			},
 		})
 	end,
-}
+}
