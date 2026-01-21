@@ -1,31 +1,31 @@
 # === Core Development Tools ===
-git
 base-devel
 cmake
-make
 gcc
 gdb
+git
+make
 
 # === Text Editors & IDEs ===
 neovim
 
 # === Terminal & Shell Tools ===
-tmux
-wezterm
-ghostty
 bat
 bottom
 fzf
-ripgrep
-zoxide
+ghostty
 lazygit
+ripgrep
+tmux
+wezterm
+zoxide
 
 # === Programming Languages ===
 # Python
 python
 python-pip
-python-virtualenv
 python-pipx
+python-virtualenv
 
 # Node.js
 nodejs
@@ -52,8 +52,8 @@ sqlitebrowser
 # luarocks (Lua package manager)
 
 # === Media & Video ===
-vlc
 mpv
+vlc
 
 # === Office & Productivity ===
 libreoffice-fresh
@@ -74,9 +74,12 @@ biber
 texstudio
 
 # === System Utilities ===
-wget
 curl
-unzip
-zip
-p7zip
 htop
+p7zip
+unzip
+wget
+zip
+
+# === Image Processing ===
+imagemagick
