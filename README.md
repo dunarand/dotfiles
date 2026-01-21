@@ -2,7 +2,7 @@
 
 ```bash
 cd ~
-git clone https://github.com/yourusername/dotfiles.git
+git clone https://github.com/dunarand/dotfiles.git
 cd dotfiles
 
 chmod +x install.sh
