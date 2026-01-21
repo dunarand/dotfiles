@@ -160,7 +160,14 @@ if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
     if [ -f "$PACKAGES_DIR/pip.txt" ]; then
         echo -e "\n${BLUE}=== Installing Python packages ===${NC}"
         PIP_CMD=$(command -v pip3 &> /dev/null && echo "pip3" || echo "pip")
-        install_from_file "$PACKAGES_DIR/pip.txt" "$PIP_CMD install --user"
+
+        while IFS= read -r package; do
+            [[ "$package" =~ ^#.*$ ]] && continue
+            [[ -z "$package" ]] && continue
+
+            echo -e "${GREEN}Installing Python package: $package${NC}"
+            $PIP_CMD install --user "$package"
+        done < "$PACKAGES_DIR/pip.txt"
     fi
 else
     echo -e "\n${YELLOW}Pip not installed. Skipping Python packages.${NC}"
