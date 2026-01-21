@@ -5,8 +5,11 @@ return {
 	version = "^1.0.0",
 	build = ":UpdateRemotePlugins",
 	ft = { "python" },
+	dependencies = {
+		"3rd/image.nvim",
+	},
 	init = function()
-		vim.g.molten_image_provider = "none"
+		vim.g.molten_image_provider = "image.nvim"
 		vim.g.molten_output_win_max_height = 20
 		vim.g.molten_auto_open_output = false
 		vim.g.molten_wrap_output = true
@@ -32,6 +35,27 @@ return {
 		}
 	end,
 	config = function()
+		require("image").setup({
+			backend = "kitty",
+			integrations = {
+				markdown = {
+					enabled = true,
+					clear_in_insert_mode = false,
+					download_remote_images = true,
+					only_render_image_at_cursor = false,
+				},
+			},
+			max_width = nil,
+			max_height = nil,
+			max_width_window_percentage = nil,
+			max_height_window_percentage = 50,
+			window_overlap_clear_enabled = false,
+			window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+			editor_only_render_when_focused = false,
+			tmux_show_only_in_active_window = false,
+			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" },
+		})
+
 		-- Helper function to detect and use venv Python
 		local function molten_init_venv()
 			local venv_python = vim.env.VIRTUAL_ENV
