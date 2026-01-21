@@ -60,12 +60,12 @@ return {
 		local function molten_init_venv()
 			local venv_python = vim.env.VIRTUAL_ENV
 			if venv_python then
-				local kernel_name = vim.fn.fnamemodify(venv_python, ":t")
-				vim.cmd("MoltenInit " .. kernel_name)
-				vim.notify("Molten initialized with venv: " .. kernel_name, vim.log.levels.INFO)
+				-- Use the python executable from venv to initialize kernel
+				vim.cmd("MoltenInit python3")
+				vim.notify("Molten initialized with venv Python: " .. venv_python, vim.log.levels.INFO)
 			else
 				vim.cmd("MoltenInit python3")
-				vim.notify("Molten initialized with default python3", vim.log.levels.WARN)
+				vim.notify("Molten initialized with system python3", vim.log.levels.WARN)
 			end
 		end
 
