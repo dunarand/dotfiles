@@ -13,7 +13,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES_DIR="$SCRIPT_DIR/../packages"
+PACKAGES_DIR="$SCRIPT_DIR"
 
 detect_os() {
     if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ -n "$WINDIR" ]]; then
@@ -156,21 +156,59 @@ else
     echo -e "\n${YELLOW}NPM not installed. Skipping npm packages.${NC}"
 fi
 
-if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
-    if [ -f "$PACKAGES_DIR/pip.txt" ]; then
-        echo -e "\n${BLUE}=== Installing Python packages ===${NC}"
-        PIP_CMD=$(command -v pip3 &> /dev/null && echo "pip3" || echo "pip")
+if [ -f "$PACKAGES_DIR/pip.txt" ]; then
+    echo -e "\n${BLUE}=== Installing Python packages ===${NC}"
 
+    if command -v pipx &> /dev/null; then
+        echo -e "${GREEN}Using pipx for Python package installation${NC}"
         while IFS= read -r package; do
             [[ "$package" =~ ^#.*$ ]] && continue
             [[ -z "$package" ]] && continue
 
             echo -e "${GREEN}Installing Python package: $package${NC}"
-            $PIP_CMD install --user "$package"
+            pipx install "$package" 2> /dev/null || pipx install "$package" --force
         done < "$PACKAGES_DIR/pip.txt"
+
+    elif command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
+        PIP_CMD=$(command -v pip3 &> /dev/null && echo "pip3" || echo "pip")
+
+        if $PIP_CMD install --help 2>&1 | grep -q "externally-managed-environment"; then
+            echo -e "${YELLOW}Detected externally-managed Python environment${NC}"
+            echo -e "${YELLOW}Installing pipx to manage Python packages...${NC}"
+
+            if in_array "$OS" "${ARCH_DISTROS[@]}"; then
+                sudo pacman -S --needed --noconfirm python-pipx
+            elif in_array "$OS" "${DEBIAN_DISTROS[@]}"; then
+                sudo apt install -y pipx
+            elif in_array "$OS" "${FEDORA_DISTROS[@]}"; then
+                sudo dnf install -y pipx
+            fi
+
+            if command -v pipx &> /dev/null; then
+                pipx ensurepath
+                while IFS= read -r package; do
+                    [[ "$package" =~ ^#.*$ ]] && continue
+                    [[ -z "$package" ]] && continue
+
+                    echo -e "${GREEN}Installing Python package: $package${NC}"
+                    pipx install "$package" 2> /dev/null || pipx install "$package" --force
+                done < "$PACKAGES_DIR/pip.txt"
+            else
+                echo -e "${YELLOW}Could not install pipx. Skipping Python packages.${NC}"
+                echo -e "${YELLOW}Install manually with: sudo pacman -S python-pipx (Arch)${NC}"
+            fi
+        else
+            while IFS= read -r package; do
+                [[ "$package" =~ ^#.*$ ]] && continue
+                [[ -z "$package" ]] && continue
+
+                echo -e "${GREEN}Installing Python package: $package${NC}"
+                $PIP_CMD install --user "$package"
+            done < "$PACKAGES_DIR/pip.txt"
+        fi
+    else
+        echo -e "${YELLOW}Neither pip nor pipx found. Skipping Python packages.${NC}"
     fi
-else
-    echo -e "\n${YELLOW}Pip not installed. Skipping Python packages.${NC}"
 fi
 
 echo -e "\n${GREEN}✓ Package installation complete!${NC}"

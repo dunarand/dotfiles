@@ -13,7 +13,7 @@ echo %GREEN%=== Windows Package Installer ===%NC%
 echo.
 
 set "SCRIPT_DIR=%~dp0"
-set "PACKAGES_FILE=%SCRIPT_DIR%..\packages\windows.txt"
+set "PACKAGES_FILE=%SCRIPT_DIR%windows.txt"
 
 where winget >nul 2>&1
 if %errorlevel% neq 0 (
@@ -62,7 +62,7 @@ for /f "usebackq delims=" %%a in ("%PACKAGES_FILE%") do (
     
     winget show --id="!line!" --exact >nul 2>&1
     if !errorlevel! neq 0 (
-        echo %RED%  ✗ Package not found: !line!%NC%
+        echo %RED%  × Package not found: !line!%NC%
         echo %YELLOW%    Tip: Search with: winget search "!line!"
         set /a "FAILED+=1"
         goto :continue_install
@@ -78,7 +78,7 @@ for /f "usebackq delims=" %%a in ("%PACKAGES_FILE%") do (
         if !errorlevel! equ 0 (
             echo %YELLOW%  ⚠ Already installed: !line!%NC%
         ) else (
-            echo %RED%  ✗ Failed to install: !line!%NC%
+            echo %RED%  × Failed to install: !line!%NC%
         )
         set /a "FAILED+=1"
     )
