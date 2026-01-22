@@ -31,3 +31,14 @@ discord
 
 # === Other ===
 spotify
+
+# === Python Packages ===
+# Neovim Python Provider
+python-pynvim
+
+# Jupyter/Molten Requirements
+python-jupyter-client
+python-ipykernel
+jupyter-nbformat
+python-pillow
+jupyter-notebook

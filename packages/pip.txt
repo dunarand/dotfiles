@@ -1,8 +1,0 @@
-# === Neovim Python Provider ===
-pynvim
-
-# === Jupyter/Molten Requirements ===
-jupyter-client
-ipykernel
-nbformat
-pillow
