@@ -5,9 +5,8 @@ BurntSushi.ripgrep.MSVC
 ajeetdsouza.zoxide
 ClementTsang.bottom
 
-# === Communication & Social ===
+# === Communication ===
 Discord.Discord
-Spotify.Spotify
 
 # === Gaming Platforms ===
 Valve.Steam
@@ -34,6 +33,9 @@ REALiX.HWiNFO
 # === File Sharing & Remote Desktop ===
 LocalSend.LocalSend
 RustDesk.RustDesk
+
+# === Other ===
+Spotify.Spotify
 
 # ============================================
 # MANUAL INSTALLATION REQUIRED (not on winget)

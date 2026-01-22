@@ -10,9 +10,6 @@ pycharm-community-edition
 dbeaver
 tad-bin
 
-# === Video Editing ===
-openshot
-
 # === Remote Desktop & File Sharing ===
 rustdesk-bin
 localsend-bin
@@ -31,4 +28,6 @@ steam
 
 # === Communication ===
 discord
+
+# === Other ===
 spotify
