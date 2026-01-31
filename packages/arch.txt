@@ -1,86 +1,84 @@
-# === Core Development Tools ===
+# INSTALL IN ORDER
 base-devel
-cmake
-gcc
-gdb
 git
-make
-
-# === Text Editors & IDEs ===
-neovim
-
-# === Terminal & Shell Tools ===
-bat
-bottom
-fzf
-ghostty
-lazygit
-ripgrep
-tmux
-wezterm
-zoxide
-
-# === Programming Languages ===
-# Python
 python
 python-pip
 python-pipx
-python-virtualenv
-
-# Node.js
-nodejs
-npm
-
-# Rust
 rustup
+nodejs
+
+# ALPHABETICAL
+bat
+biber
+blueman
+bottom
 cargo
-
-# Zig
-zig
-
-# Lua
-lua
-lua51 # required for image.nvim
-luarocks
-
-# === Database Tools ===
-sqlitebrowser
-
-# === Package Managers ===
-# cargo (installed with rustup)
-# npm (installed with nodejs)
-# pip (installed with python)
-# luarocks (Lua package manager)
-
-# === Media & Video ===
-mpv
-vlc
-
-# === Office & Productivity ===
+cliphist
+cmake
+curl
+desktop-file-utils
+dunst
+fd
+fzf
+gcc
+gdb
+ghostty
+grim
+htop
+imagemagick
+kate
+lazygit
+libnotify
 libreoffice-fresh
-
-# === LaTeX ===
+lua
+lua51
+luarocks
+make
+mpv
+neovim
+network-manager-applet
+npm
+ntfs-3g
+p7zip
+polkit-gnome
+python-virtualenv
+ripgrep
+rofi
+shared-mime-info
+slurp
+sqlitebrowser
+swappy
+swayimg
+tesseract
+tesseract-data-eng
 texlive-basic
 texlive-bin
 texlive-binextra
+texlive-fontsextra
+texlive-fontsrecommended
 texlive-latex
 texlive-latexextra
 texlive-latexrecommended
-texlive-fontsrecommended
-texlive-fontsextra
 texlive-mathscience
-texlive-publishers
 texlive-pictures
-biber
+texlive-publishers
 texstudio
-
-# === System Utilities ===
-curl
-htop
-p7zip
+tmux
+trash-cli
+ttf-jetbrains-mono
+ttf-jetbrains-mono-nerd
+ttf-nerd-fonts-symbols
+ttf-nerd-fonts-symbols-mono
 unzip
+vlc
+waybar
 wget
+wezterm
+wl-clipboard
+wlogout
+xdg-user-dirs
+xdg-utils
+yad
+zig
 zip
-
-# === Image Processing ===
-imagemagick
+zoxide
