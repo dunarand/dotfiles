@@ -1,0 +1,107 @@
+/* Catppuccin Mocha – Fixed Rofi Theme */
+
+* {
+    bg:        #1e1e2e;
+    bg-alt:    #181825;
+    fg:        #cdd6f4;
+    muted:     #6c7086;
+
+    accent:    #cba6f7;
+    accent2:   #89b4fa;
+
+    border:    #313244;
+    urgent:    #f38ba8;
+
+    font: "JetBrainsMono Nerd Font 12";
+
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 480px;
+
+    background-color: @bg;
+    border: 2px;
+    border-color: @border;
+    border-radius: 14px;
+    padding: 10px;
+}
+
+mainbox {
+    background-color: @bg;
+    spacing: 8px;
+    padding: 6px;
+    children: [inputbar, listview];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border: 0px;
+    border-radius: 10px;
+    padding: 10px;
+    spacing: 8px;
+}
+
+prompt {
+    background-color: transparent;
+    text-color: @accent;
+    font: "JetBrainsMono Nerd Font Bold 12";
+    padding: 2px 6px;
+}
+
+textbox {
+    background-color: transparent;
+    text-color: inherit;
+}
+
+entry {
+    enabled: false;
+}
+
+listview {
+    background-color: @bg;
+    border: 0px;
+    spacing: 6px;
+    padding: 4px;
+    lines: 8;
+    fixed-height: false;
+}
+
+element {
+    background-color: transparent;
+    text-color: @fg;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+element normal.normal {
+    background-color: transparent;
+}
+
+element selected.normal {
+    background-color: @accent;
+    text-color: @bg;
+}
+
+element selected.active {
+    background-color: @accent2;
+    text-color: @bg;
+}
+
+element-text,
+element-icon {
+    background-color: transparent;
+    text-color: inherit;
+}
+
+scrollbar {
+    background-color: transparent;
+}
+
+scrollbar handle {
+    background-color: @border;
+    border-radius: 6px;
+}
