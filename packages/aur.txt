@@ -1,18 +1,44 @@
-dbeaver
-discord
-jupyter-nbformat
-jupyter-notebook
-localsend-bin
-marktext-bin
-obsidian
-pycharm-community-edition
-python-ipykernel
-python-jupyter-client
-python-pillow
-python-pynvim
-rustdesk-bin
-spotify
-steam
-tad-bin
+# === Useful Tools ===
+# AUR helper
+# yay-bin
+
+# === IDEs & Development Tools ===
 visual-studio-code-bin
+pycharm-community-edition
+
+# === Database Tools ===
+dbeaver
+tad-bin
+
+# === Remote Desktop & File Sharing ===
+rustdesk-bin
+localsend-bin
+
+# === Note Taking ===
+obsidian
+
+# === Markdown Editors ===
+marktext-bin
+
+# === Web Browsers ===
 zen-browser-bin
+
+# === Gaming ===
+steam
+
+# === Communication ===
+discord
+
+# === Other ===
+spotify
+
+# === Python Packages ===
+# Neovim Python Provider
+python-pynvim
+
+# Jupyter/Molten Requirements
+python-jupyter-client
+python-ipykernel
+jupyter-nbformat
+python-pillow
+jupyter-notebook

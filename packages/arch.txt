@@ -1,52 +1,86 @@
+# === Core Development Tools ===
 base-devel
-bat
-biber
-bottom
-cargo
 cmake
-curl
-fzf
 gcc
 gdb
-ghostty
 git
-htop
-imagemagick
-lazygit
-libreoffice-fresh
-lua
-lua51 # required for image.nvim
-luarocks
 make
-mpv
+
+# === Text Editors & IDEs ===
 neovim
-nodejs
-npm
-p7zip
+
+# === Terminal & Shell Tools ===
+bat
+bottom
+fzf
+ghostty
+lazygit
+ripgrep
+tmux
+wezterm
+zoxide
+
+# === Programming Languages ===
+# Python
 python
 python-pip
 python-pipx
 python-virtualenv
-ripgrep
+
+# Node.js
+nodejs
+npm
+
+# Rust
 rustup
+cargo
+
+# Zig
+zig
+
+# Lua
+lua
+lua51 # required for image.nvim
+luarocks
+
+# === Database Tools ===
 sqlitebrowser
+
+# === Package Managers ===
+# cargo (installed with rustup)
+# npm (installed with nodejs)
+# pip (installed with python)
+# luarocks (Lua package manager)
+
+# === Media & Video ===
+mpv
+vlc
+
+# === Office & Productivity ===
+libreoffice-fresh
+
+# === LaTeX ===
 texlive-basic
 texlive-bin
 texlive-binextra
-texlive-fontsextra
-texlive-fontsrecommended
 texlive-latex
 texlive-latexextra
 texlive-latexrecommended
+texlive-fontsrecommended
+texlive-fontsextra
 texlive-mathscience
-texlive-pictures
 texlive-publishers
+texlive-pictures
+biber
 texstudio
-tmux
+
+# === System Utilities ===
+curl
+htop
+p7zip
 unzip
-vlc
-wezterm
 wget
-zig
 zip
-zoxide
+
+# === Image Processing ===
+imagemagick
