@@ -42,42 +42,115 @@ create_symlink() {
     echo -e "${GREEN}✓${NC} Linked $source -> $target"
 }
 
+# -------------------------------
+# Script permission handling
+# -------------------------------
+
+chmod_script_if_valid() {
+    local file="$1"
+
+    if head -n 1 "$file" | grep -q "^#\!"; then
+        chmod +x "$file"
+        echo -e "${GREEN}✓${NC} chmod +x $file"
+    else
+        echo -e "${YELLOW}! Skipped (no shebang): $file${NC}"
+    fi
+}
+
+handle_config_scripts_permissions() {
+    local config_dir="$DOTFILES_DIR/config"
+
+    [ ! -d "$config_dir" ] && return
+
+    echo -e "\n${BLUE}How should script permissions under config/ be handled?${NC}"
+    echo "1) Automatically make all scripts executable"
+    echo "2) Prompt per directory"
+    echo "3) Prompt per individual script"
+    echo "4) Skip"
+
+    read -p "Select an option [1-4]: " choice
+
+    case "$choice" in
+        1)
+            echo -e "\n${GREEN}Making all config scripts executable...${NC}"
+            find "$config_dir" -type f -name "*.sh" | while read -r file; do
+                chmod_script_if_valid "$file"
+            done
+            ;;
+        2)
+            echo -e "\n${GREEN}Prompting per directory...${NC}"
+            find "$config_dir" -type d | while read -r dir; do
+                scripts=$(find "$dir" -maxdepth 1 -type f -name "*.sh")
+                [ -z "$scripts" ] && continue
+
+                if ask_confirmation "Make scripts in $(realpath --relative-to="$DOTFILES_DIR" "$dir") executable?"; then
+                    for file in $scripts; do
+                        chmod_script_if_valid "$file"
+                    done
+                fi
+            done
+            ;;
+        3)
+            echo -e "\n${GREEN}Prompting per script...${NC}"
+            find "$config_dir" -type f -name "*.sh" | while read -r file; do
+                if ask_confirmation "Make $(realpath --relative-to="$DOTFILES_DIR" "$file") executable?"; then
+                    chmod_script_if_valid "$file"
+                fi
+            done
+            ;;
+        *)
+            echo -e "${YELLOW}Skipped config script permissions${NC}"
+            ;;
+    esac
+}
+
+# -------------------------------
 # Home directory dotfiles
+# -------------------------------
+
 if ask_confirmation "Install home directory dotfiles?"; then
     echo -e "\n${GREEN}Installing home directory dotfiles...${NC}"
     for file in "$DOTFILES_DIR"/home/.*; do
-        if [ "$(basename "$file")" != "." ] && [ "$(basename "$file")" != ".." ]; then
-            create_symlink "$file" "$HOME/$(basename "$file")"
+        base="$(basename "$file")"
+        if [ "$base" != "." ] && [ "$base" != ".." ]; then
+            create_symlink "$file" "$HOME/$base"
         fi
     done
 else
     echo -e "${YELLOW}Skipped home directory dotfiles${NC}"
 fi
 
-# .config directory files
+# -------------------------------
+# .config directory
+# -------------------------------
+
 if [ -d "$DOTFILES_DIR/config" ]; then
     if ask_confirmation "Install .config directory files?"; then
         echo -e "\n${GREEN}Installing .config directory files...${NC}"
         for dir in "$DOTFILES_DIR"/config/*; do
-            if [ -d "$dir" ]; then
-                create_symlink "$dir" "$HOME/.config/$(basename "$dir")"
-            fi
+            [ -d "$dir" ] || continue
+            create_symlink "$dir" "$HOME/.config/$(basename "$dir")"
         done
+
+        handle_config_scripts_permissions
     else
         echo -e "${YELLOW}Skipped .config directory files${NC}"
     fi
 fi
 
-# Scripts
+# -------------------------------
+# Scripts → ~/.local/bin
+# -------------------------------
+
 if [ -d "$DOTFILES_DIR/scripts" ]; then
     if ask_confirmation "Install scripts to ~/.local/bin?"; then
         echo -e "\n${GREEN}Installing scripts...${NC}"
         mkdir -p "$HOME/.local/bin"
+
         for script in "$DOTFILES_DIR"/scripts/*.sh; do
-            if [ -f "$script" ]; then
-                create_symlink "$script" "$HOME/.local/bin/$(basename "$script")"
-                chmod +x "$script"
-            fi
+            [ -f "$script" ] || continue
+            create_symlink "$script" "$HOME/.local/bin/$(basename "$script")"
+            chmod_script_if_valid "$script"
         done
     else
         echo -e "${YELLOW}Skipped scripts installation${NC}"
@@ -85,4 +158,4 @@ if [ -d "$DOTFILES_DIR/scripts" ]; then
 fi
 
 echo -e "\n${GREEN}Dotfiles installation complete!${NC}"
-echo -e "${YELLOW}Note: You may need to restart your shell or source your config files${NC}"
+echo -e "${YELLOW}Note: You may need to restart your shell or reload Waybar/Hyprland${NC}"
