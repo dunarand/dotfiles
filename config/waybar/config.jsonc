@@ -126,7 +126,7 @@
 
   "custom/power": {
     "format": "⏻",
-    "on-click": "pkill wlogout || wlogout",
+    "on-click": "pkill wlogout || wlogout --buttons-per-row 5",
     "tooltip": false,
   },
 }
