@@ -1,0 +1,124 @@
+// Catppuccin Mocha Palette
+$bg: #1e1e2e;
+$surface0: #313244;
+$surface1: #45475a;
+$text: #cdd6f4;
+$subtext: #a6adc8;
+$maroon: #eba0ac;
+$blue: #89b4fa;
+$lavender: #b4befe;
+
+* {
+  all: unset;
+}
+
+// Reset default GTK styles
+
+.mixer-container {
+  background-color: $bg;
+  color: $text;
+  border: 1px solid $blue;
+  border-radius: 12px;
+  padding: 15px;
+  font-family: "JetBrainsMono Nerd Font";
+}
+
+.header-icon {
+  font-size: 1.2em;
+  color: $maroon;
+  margin-right: 10px;
+}
+
+.header-title {
+  font-size: 0.8em;
+  color: $subtext;
+}
+
+.header-text {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.current-device-name {
+  font-size: 1em;
+  font-weight: bold;
+  color: $text;
+}
+
+.device-switch-btn {
+  background-color: $surface0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: $blue;
+
+  &:hover {
+    background-color: $surface1;
+  }
+}
+
+.main-vol-box {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.vol-label {
+  font-weight: bold;
+  color: $subtext;
+}
+
+.vol-percent {
+  color: $maroon;
+  font-weight: bold;
+}
+
+.apps-title {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: $lavender;
+  margin: 10px 0;
+}
+
+.app-card {
+  background-color: rgba(49, 50, 68, 0.5); // Surface0 with transparency
+  padding: 10px;
+  border-radius: 8px;
+  margin-right: 5px;
+}
+
+.app-icon {
+  min-width: 24px;
+  min-height: 24px;
+  margin-right: 8px;
+}
+
+.app-name {
+  font-size: 0.9em;
+  color: $text;
+}
+
+.app-vol-text {
+  font-size: 0.8em;
+  color: $subtext;
+}
+
+// Slider Styling
+scale trough {
+  background-color: $surface1;
+  border-radius: 5px;
+  min-height: 10px;
+  margin-top: 8px;
+
+  highlight {
+    background-color: $maroon; // Main slider color
+    border-radius: 5px;
+  }
+}
+
+.app-slider trough highlight {
+  background-color: $blue; // App slider color
+}
+
+.separator {
+  background-color: $surface0;
+  margin: 10px 0;
+}

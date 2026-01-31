@@ -1,0 +1,133 @@
+;; Variables - High refresh rate for the system volume for responsiveness
+(defpoll current_volume
+  :interval "16ms"
+  "pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]+(?=%)' | head -1")
+
+(defpoll app_list
+  :interval "5000ms"
+  "~/.config/eww/scripts/get_apps.sh")
+
+(defpoll current_device
+  :interval "1s"
+  "pactl list sinks \
+   | awk -v def=\"$(pactl get-default-sink)\" '
+     $1==\"Name:\" {name=$2}
+     /Description:/ && name==def {
+       sub(\"Description: \", \"\")
+       print
+       exit
+     }'")
+
+;; Main Window Definition
+(defwindow mixer
+  :class "mixer"
+  :monitor 0
+  :anchor "top"
+  :geometry (geometry
+    :x "785px"
+    :y "5px"
+    :width "350px")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false ;; DO NOT EVER CHANGE THIS!!!
+  (mixer_layout))
+
+;; Root Layout Widget
+(defwidget mixer_layout []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :class "mixer-container"
+
+    ;; Header: Output device name + switch button
+    (box
+      :orientation "h"
+      :class "header"
+      :space-evenly false
+      :hexpand true
+      :halign "fill"
+
+      ;; Left column (device text)
+      (box
+        :orientation "v"
+        :hexpand true
+        :halign "start"
+        :space-evenly false
+
+        (label
+          :text "Output Device"
+          :class "header-title"
+          :halign "start")
+
+        (label
+          :text {current_device ?: "Unknown Output"}
+          :class "current-device-name"
+          :halign "start"
+          :wrap false
+          :ellipsize "end"
+          :limit-width 25))
+
+      ;; Switch button (right)
+      (button
+        :halign "end"
+        :class "device-switch-btn"
+        :onclick "~/.config/eww/scripts/switch_output.sh"
+        (label :text "󰓃")))
+
+    ;; Main System Volume Section
+    (box :orientation "v" :class "main-vol-box" :space-evenly false
+      (box :space-evenly false
+        (label :text "System" :class "vol-label")
+        (label
+          :text "${current_volume}%"
+          :hexpand true
+          :halign "end"
+          :class "vol-percent"))
+      (scale
+        :class "main-slider"
+        :value {current_volume ?: 0}
+        :orientation "h"
+        :max 101
+        :min 0
+        :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"))
+
+    ;; Visual Divider
+    (box :class "separator")
+
+    ;; Applications Section
+    (box :orientation "v" :space-evenly false :class "apps-container"
+      (label
+        :text "Applications"
+        :halign "start"
+        :class "apps-section-title")
+
+      (box :orientation "v" :spacing 8 :space-evenly false
+        (for app in app_list
+          (app_entry
+            :name {app.name}
+            :id {app.id}
+            :vol {app.volume}
+            :icon {app.icon}))))))
+
+;; Sub-widget for each application entry
+(defwidget app_entry [name id vol icon]
+  (box :orientation "v" :class "app-card" :space-evenly false
+    (box :space-evenly false :class "app-info"
+      (label :text icon :class "app-icon")
+      (label
+        :text name
+        :limit-width 22
+        :halign "start"
+        :class "app-name")
+      (label
+        :text "${vol}%"
+        :hexpand true
+        :halign "end"
+        :class "app-vol-text"))
+    (scale
+      :class "app-slider"
+      :value vol
+      :orientation "h"
+      :max 101
+      :min 0
+      :onchange "pactl set-sink-input-volume ${id} {}%")))
