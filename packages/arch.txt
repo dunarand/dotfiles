@@ -82,3 +82,10 @@ yad
 zig
 zip
 zoxide
+
+
+
+##############
+
+hyprpaper
+hyprlock
