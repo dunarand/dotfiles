@@ -1,0 +1,37 @@
+gui:
+  nerdFontsVersion: "3"
+  showFileIcons: true
+
+  theme:
+    activeBorderColor:
+      - "#89b4fa"  # Blue
+      - bold
+    inactiveBorderColor:
+      - "#6c7086"  # Surface2
+    searchingActiveBorderColor:
+      - "#f38ba8"  # Red
+      - bold
+    optionsTextColor:
+      - "#fab387"  # Peach
+    selectedLineBgColor:
+      - "#313244"  # Surface0
+    inactiveViewSelectedLineBgColor:
+      - "#45475a"  # Surface1
+    cherryPickedCommitFgColor:
+      - "#a6e3a1"  # Green
+    cherryPickedCommitBgColor:
+      - "#45475a"
+    markedBaseCommitFgColor:
+      - "#f9e2af"  # Yellow
+    markedBaseCommitBgColor:
+      - "#45475a"
+    unstagedChangesColor:
+      - "#f38ba8"  # Red
+    defaultFgColor:
+      - default
+
+os:
+  edit: "nvim {{filename}}"
+  editAtLine: "nvim +{{line}} {{filename}}"
+  editAtLineAndWait: "nvim +{{line}} {{filename}}"
+  openDirInEditor: "nvim ."
