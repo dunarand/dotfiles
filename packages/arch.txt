@@ -8,6 +8,7 @@ rustup
 nodejs
 
 # ALPHABETICAL
+archlinux-xdg-menu
 bat
 biber
 blueman
@@ -25,6 +26,8 @@ gdb
 ghostty
 grim
 htop
+hyprlock
+hyprpaper
 imagemagick
 kate
 lazygit
@@ -49,6 +52,7 @@ slurp
 sqlitebrowser
 swappy
 swayimg
+swww
 tesseract
 tesseract-data-eng
 texlive-basic
@@ -72,8 +76,8 @@ ttf-nerd-fonts-symbols-mono
 unzip
 vlc
 waybar
-wget
 wezterm
+wget
 wl-clipboard
 wlogout
 xdg-user-dirs
@@ -82,10 +86,3 @@ yad
 zig
 zip
 zoxide
-
-
-
-##############
-
-hyprpaper
-hyprlock
