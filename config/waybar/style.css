@@ -1,9 +1,8 @@
-/* =====================================================
+/* ============================
    Global Defaults
-   ===================================================== */
+   ============================ */
 * {
     border: none;
-    border-radius: 0;
     font-family: "JetBrainsMono Nerd Font", "Inter", sans-serif;
     font-size: 14px;
     min-height: 0;
@@ -14,9 +13,10 @@ window#waybar {
     color: #cdd6f4;
 }
 
-/* =====================================================
+
+/* ============================
    Shared Pill Styling
-   ===================================================== */
+   ============================ */
 #custom-launcher,
 #workspaces,
 #window,
@@ -36,15 +36,20 @@ window#waybar {
     border-radius: 8px;
 }
 
-/* =====================================================
-   Left Side
-   ===================================================== */
+
+/* ============================
+   Launcher
+   ============================ */
 #custom-launcher {
     color: #89b4fa;
     font-weight: bold;
     margin-left: 4px;
 }
 
+
+/* ============================
+   Workspaces
+   ============================ */
 #workspaces button {
     padding: 0 8px;
     color: #cdd6f4;
@@ -64,28 +69,43 @@ window#waybar {
     border-bottom: 2px solid #89b4fa;
 }
 
+
+/* ============================
+   Window Title
+   ============================ */
+#window {}
+
+
+/* ============================
+   MPRIS
+   ============================ */
 #mpris {
-    color: #a6e3a1; /* green for playing */
+    color: #a6e3a1;
     font-style: italic;
 }
 
 #mpris.paused {
-    color: #f9e2af; /* yellow when paused */
+    color: #f9e2af;
 }
 
 #mpris:hover {
     background-color: #45475a;
 }
 
-/* =====================================================
-   Right Side – Module Colors
-   ===================================================== */
+
+/* ============================
+   System Modules
+   ============================ */
 #network { color: #94e2d5; }
 #pulseaudio { color: #eba0ac; }
 #custom-microphone { color: #b4befe; }
 #cpu { color: #a6e3a1; }
 #memory { color: #f9e2af; }
-#clock { color: #cba6f7; }
+
+#clock {
+    color: #cba6f7;
+    padding: 0 12px;
+}
 
 #custom-power {
     color: #f38ba8;
@@ -97,9 +117,9 @@ window#waybar {
 }
 
 
-/* =====================================================
+/* ============================
    Hover Effects
-   ===================================================== */
+   ============================ */
 #custom-launcher:hover,
 #pulseaudio:hover,
 #custom-microphone:hover,
@@ -113,25 +133,31 @@ window#waybar {
     background-color: #45475a;
 }
 
-/* =====================================================
+
+/* ============================
    Audio States
-   ===================================================== */
+   ============================ */
 #pulseaudio.muted,
 #custom-microphone.muted {
     color: #f38ba8;
 }
 
-/* =====================================================
-   Tray Styling
-   ===================================================== */
+
+/* ============================
+   Tray
+   ============================ */
 #tray {
-    padding: 0 8px;
+    background-color: #313244;
+    margin: 8px 2px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: #cdd6f4;
 }
 
 #tray > .item {
     padding: 0 6px;
-    transition: background-color 0.2s ease;
     border-radius: 6px;
+    transition: background-color 0.2s ease;
 }
 
 #tray > .item:hover {
@@ -142,7 +168,10 @@ window#waybar {
     padding: 2px;
 }
 
-/* Tray popup menus */
+
+/* ============================
+   Menus
+   ============================ */
 menu {
     background-color: #1e1e2e;
     border-radius: 10px;
@@ -160,16 +189,18 @@ menu menuitem:hover {
     background-color: #45475a;
 }
 
-/* =====================================================
+
+/* ============================
    Empty State
-   ===================================================== */
+   ============================ */
 window#waybar.empty #window {
     background-color: transparent;
 }
 
-/* =====================================================
+
+/* ============================
    Tooltips
-   ===================================================== */
+   ============================ */
 tooltip {
     background-color: #1e1e2e;
     border-radius: 10px;

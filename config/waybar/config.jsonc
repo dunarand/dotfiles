@@ -3,8 +3,18 @@
   "position": "top",
   "height": 30,
   "spacing": 0,
-  "modules-left": ["custom/launcher", "hyprland/workspaces", "mpris"],
-  "modules-center": ["hyprland/window"],
+
+  "modules-left": [
+    "custom/launcher",
+    "hyprland/workspaces",
+    "mpris",
+    "tray"
+  ],
+
+  "modules-center": [
+    "hyprland/window"
+  ],
+
   "modules-right": [
     "network",
     "custom/bluetooth",
@@ -13,7 +23,7 @@
     "cpu",
     "memory",
     "clock",
-    "custom/power",
+    "custom/power"
   ],
 
   "custom/launcher": {
@@ -21,14 +31,14 @@
     "exec": "hostname",
     "interval": "once",
     "on-click": "rofi -show drun",
-    "tooltip": false,
+    "tooltip": false
   },
 
   "hyprland/workspaces": {
     "format": "{name}",
     "on-click": "activate",
     "all-outputs": true,
-    "show-special": true,
+    "show-special": true
   },
 
   "hyprland/window": {
@@ -36,29 +46,30 @@
     "icon": true,
     "icon-size": 16,
     "separate-outputs": true,
-    "max-length": 30,
+    "max-length": 30
   },
 
   "mpris": {
     "format": "{player_icon}  {dynamic}",
     "empty-format": "",
     "max-length": 32,
-
     "player-icons": {
       "spotify": "",
       "firefox": "󰈹",
       "chromium": "",
-      "default": "",
+      "default": ""
     },
-
     "ignored-players": ["vlc"],
-
     "on-click": "playerctl play-pause",
     "on-click-right": "~/.config/waybar/scripts/media-menu.sh",
     "on-click-middle": "~/.config/waybar/scripts/focus-player.sh",
-
     "tooltip": true,
-    "tooltip-format": "{player}\n{artist} — {title}\nAlbum: {album}\nLength: {length}",
+    "tooltip-format": "{player}\n{artist} — {title}\nAlbum: {album}\nLength: {length}"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
   },
 
   "network": {
@@ -68,7 +79,7 @@
     "format-disconnected": "󰤮 ",
     "tooltip-format": "{ifname}\nIP: {ipaddr}/{cidr}\nDown: {bandwidthDownBits}\nUp: {bandwidthUpBits}",
     "interval": 1,
-    "on-click-middle": "nm-connection-editor",
+    "on-click-middle": "nm-connection-editor"
   },
 
   "custom/bluetooth": {
@@ -77,14 +88,14 @@
     "interval": 5,
     "tooltip": true,
     "on-click": "bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || bluetoothctl power on",
-    "on-click-middle": "blueman-manager",
+    "on-click-middle": "blueman-manager"
   },
 
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": "  {volume}%",
     "format-icons": {
-      "default": [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+      "default": [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
     },
     "tooltip-format": "{desc}",
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
@@ -92,7 +103,7 @@
     "on-click-middle": "pavucontrol",
     "on-scroll-up": "~/.config/waybar/scripts/volume-step.sh @DEFAULT_SINK@ up",
     "on-scroll-down": "~/.config/waybar/scripts/volume-step.sh @DEFAULT_SINK@ down",
-    "tooltip": true,
+    "tooltip": true
   },
 
   "custom/microphone": {
@@ -103,30 +114,34 @@
     "on-click-middle": "pavucontrol",
     "on-scroll-up": "~/.config/waybar/scripts/volume-step.sh @DEFAULT_SOURCE@ up",
     "on-scroll-down": "~/.config/waybar/scripts/volume-step.sh @DEFAULT_SOURCE@ down",
-    "tooltip": true,
+    "tooltip": true
   },
 
   "cpu": {
     "format": "  {usage}%",
     "interval": 2,
     "tooltip": true,
-    "on-click-middle": "ghostty -e btm",
+    "on-click-middle": "ghostty -e btm"
   },
+
   "memory": {
     "format": "  {percentage}%",
     "interval": 5,
     "tooltip": true,
     "tooltip-format": "Memory\nUsed: {used} GiB\nFree: {avail} GiB",
-    "on-click-middle": "ghostty -e btm",
+    "on-click-middle": "ghostty -e btm"
   },
+
   "clock": {
-    "format": "󰃭  {:%a, %b %d  󱑒 %H:%M}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "󱑒 {:%H:%M}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
   },
 
   "custom/power": {
     "format": "⏻",
     "on-click": "pkill wlogout || wlogout --buttons-per-row 5",
-    "tooltip": false,
-  },
+    "tooltip-format": "Uptime: {}",
+    "exec": "uptime -p | sed 's/up //'",
+    "interval": 60
+  }
 }
