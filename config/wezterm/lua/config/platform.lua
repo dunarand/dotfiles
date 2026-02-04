@@ -8,7 +8,7 @@ function M.apply_to_config(config)
 		config.default_prog = { "pwsh.exe", "-NoLogo" }
 	elseif platform:find("apple") or platform:find("linux") then
 		config.enable_wayland = false
-		config.default_prog = { "/bin/zsh", "--login" }
+		config.default_prog = { "/bin/fish", "--login" }
 	end
 end
 
