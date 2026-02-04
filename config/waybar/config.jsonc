@@ -6,9 +6,9 @@
 
   "modules-left": [
     "custom/launcher",
+    "tray",
     "hyprland/workspaces",
-    "mpris",
-    "tray"
+    "mpris"
   ],
 
   "modules-center": [
@@ -34,6 +34,12 @@
     "tooltip": false
   },
 
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "show-passive-items": true
+    },
+
   "hyprland/workspaces": {
     "format": "{name}",
     "on-click": "activate",
@@ -41,18 +47,10 @@
     "show-special": true
   },
 
-  "hyprland/window": {
-    "format": "{initialTitle} - {title}",
-    "icon": true,
-    "icon-size": 16,
-    "separate-outputs": true,
-    "max-length": 30
-  },
-
   "mpris": {
-    "format": "{player_icon}  {dynamic}",
+    "format": "{player_icon}  {title} - {artist}",
     "empty-format": "",
-    "max-length": 32,
+    "max-length": 24,
     "player-icons": {
       "spotify": "",
       "firefox": "󰈹",
@@ -67,9 +65,12 @@
     "tooltip-format": "{player}\n{artist} — {title}\nAlbum: {album}\nLength: {length}"
   },
 
-  "tray": {
+  "hyprland/window": {
+    "format": "{title}",
+    "icon": true,
     "icon-size": 16,
-    "spacing": 8
+    "separate-outputs": true,
+    "max-length": 30
   },
 
   "network": {
