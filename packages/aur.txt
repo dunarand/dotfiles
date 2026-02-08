@@ -4,13 +4,15 @@ python-pynvim
 # ALPHABETICAL
 dbeaver
 discord
-eww
+google-chrome
+grimblast
 jupyter-nbformat
 jupyter-notebook
 localsend-bin
 marktext-bin
 obsidian
 pycharm-community-edition
+python-gpustat
 python-ipykernel
 python-jupyter-client
 python-pillow
@@ -19,4 +21,4 @@ spotify
 steam
 tad-bin
 visual-studio-code-bin
-zen-browser-bin
+wf-recorder
