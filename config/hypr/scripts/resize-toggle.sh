@@ -19,16 +19,16 @@ monitor_width=$(echo "$monitor_info" | jq -r '.width')
 # Calculate current percentage
 percentage=$((current_width * 100 / monitor_width))
 
-# Toggle between sizes with better tolerance
-if [ $percentage -le 35 ]; then
-    # Currently ~30% or less, switch to 50%
-    hyprctl dispatch resizeactive exact 50% 50%
-elif [ $percentage -le 60 ]; then
-    # Currently ~50%, switch to 70%
-    hyprctl dispatch resizeactive exact 70% 70%
+# Toggle between 40 / 60 / 80% with tolerance thresholds
+if [ $percentage -le 50 ]; then
+    # Currently ~40% or less → switch to 60%
+    hyprctl dispatch resizeactive exact 60% 60%
+elif [ $percentage -le 70 ]; then
+    # Currently ~60% → switch to 80%
+    hyprctl dispatch resizeactive exact 80% 80%
 else
-    # Currently ~70% or more, switch to 30%
-    hyprctl dispatch resizeactive exact 30% 30%
+    # Currently ~80% or more → switch to 40%
+    hyprctl dispatch resizeactive exact 40% 40%
 fi
 
 # Center the window after resizing
