@@ -40,7 +40,6 @@ gvfs
 htop
 hypridle
 hyprlock
-hyprpaper
 hyprpicker
 imagemagick
 iniparser
@@ -76,9 +75,6 @@ seahorse
 shared-mime-info
 slurp
 sqlitebrowser
-swappy
-swayimg
-swww
 swww
 tesseract
 tesseract-data-eng
