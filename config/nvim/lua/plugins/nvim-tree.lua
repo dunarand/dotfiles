@@ -81,6 +81,10 @@ return {
 			sort = {
 				sorter = "case_sensitive",
 			},
+			filesystem_watchers = {
+				enable = true,
+				debounce_delay = 50,
+			},
 			view = {
 				width = 30,
 				side = "left",
@@ -149,11 +153,13 @@ return {
 		vim.keymap.set("n", "<C-n>", function()
 			require("nvim-tree.api").tree.toggle()
 		end, { desc = "Toggle nvim-tree", silent = true })
-		-- Auto-focus on file when buffer changes (for harpoon)
+		
+		-- Auto-focus on file when buffer changes (only for actual file buffers)
 		vim.api.nvim_create_autocmd("BufEnter", {
 			group = vim.api.nvim_create_augroup("NvimTreeAutoFocus", { clear = true }),
 			callback = function()
-				if require("nvim-tree.view").is_visible() then
+				local buftype = vim.bo.buftype
+				if buftype == "" and require("nvim-tree.view").is_visible() then
 					require("nvim-tree.api").tree.find_file({ open = false, focus = false })
 				end
 			end,
