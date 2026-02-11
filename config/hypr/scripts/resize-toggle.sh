@@ -21,13 +21,10 @@ percentage=$((current_width * 100 / monitor_width))
 
 # Toggle between 40 / 60 / 80% with tolerance thresholds
 if [ $percentage -le 50 ]; then
-    # Currently ~40% or less → switch to 60%
     hyprctl dispatch resizeactive exact 60% 60%
 elif [ $percentage -le 70 ]; then
-    # Currently ~60% → switch to 80%
     hyprctl dispatch resizeactive exact 80% 80%
 else
-    # Currently ~80% or more → switch to 40%
     hyprctl dispatch resizeactive exact 40% 40%
 fi
 
