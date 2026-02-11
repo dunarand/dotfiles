@@ -19,23 +19,8 @@ if [[ -z "$STREAM" ]]; then
     exit 1
 fi
 
-# Handle cases where PipeWire name differs from window class
-NORMALIZED=$(echo "$STREAM" | tr '[:upper:]' '[:lower:]')
-case "$NORMALIZED" in
-    *vlc* | *libvlc*)
-        MATCH="vlc"
-        ;;
-    *chrome* | *chromium*)
-        MATCH="chromium|google-chrome|brave|chrome"
-        ;;
-    *)
-        # Default: use stream name as-is
-        MATCH="$STREAM"
-        ;;
-esac
-
 # Find window in Hyprland (case-insensitive match)
-CLIENT=$(hyprctl clients -j | jq -r ".[] | select(.class | test(\"$MATCH\"; \"i\"))")
+CLIENT=$(hyprctl clients -j | jq -r ".[] | select(.class | test(\"$STREAM\"; \"i\"))")
 
 if [[ -z "$CLIENT" ]]; then
     notify-send "Audio source '$STREAM' found but no matching window."
