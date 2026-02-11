@@ -1,24 +1,36 @@
 #!/bin/bash
 
-DIR="$HOME/Pictures/wallpapers"
-FILES=("$DIR"/*.jpg "$DIR"/*.png)
+BASE="$HOME/Pictures/wallpapers"
 
-CACHE="$HOME/.cache/swww_index"
+MOOD_FILE="$HOME/.cache/wallpaper_mood"
+INDEX_FILE="$HOME/.cache/wallpaper_index"
 
-# Read index, default to 0 if unreadable
-INDEX=$(cat "$CACHE" 2>/dev/null)
-[[ "$INDEX" =~ ^[0-9]+$ ]] || INDEX=0
+# Load mood
+MOODS=("$BASE"/*/)
+[[ -f "$MOOD_FILE" ]] && CURRENT_MOOD_INDEX=$(cat "$MOOD_FILE") || CURRENT_MOOD_INDEX=0
+CURRENT_MOOD="${MOODS[$CURRENT_MOOD_INDEX]}"
 
+# List files in mood
+FILES=("$CURRENT_MOOD"*.jpg "$CURRENT_MOOD"*.png)
+COUNT=${#FILES[@]}
+
+[[ $COUNT -eq 0 ]] && notify-send "No wallpapers!" "Folder has no images." && exit 1
+
+# Load index
+[[ -f "$INDEX_FILE" ]] && INDEX=$(cat "$INDEX_FILE") || INDEX=0
+
+# Advance
 ((INDEX++))
-if (( INDEX >= ${#FILES[@]} )); then
-    INDEX=0
-fi
+((INDEX >= COUNT)) && INDEX=0
+echo "$INDEX" > "$INDEX_FILE"
 
-echo "$INDEX" > "$CACHE"
-
-SELECTED="${FILES[$INDEX]}"
-
-swww img "$SELECTED" \
+# Apply wallpaper
+swww img "${FILES[$INDEX]}" \
     --transition-type simple \
     --transition-step 10 \
     --resize crop
+
+# Notify
+NAME=$(basename "$CURRENT_MOOD")
+FILE=$(basename "${FILES[$INDEX]}")
+notify-send "Wallpaper: $NAME" "$FILE"
