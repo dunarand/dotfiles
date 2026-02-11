@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PRESET_DIR="$HOME/.config/easyeffects/presets/"
+PRESET_DIR="$HOME/Documents/easyeffects/presets/"
 STATE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/easyeffects_preset_index"
 
 mkdir -p "$(dirname "$STATE_FILE")"
