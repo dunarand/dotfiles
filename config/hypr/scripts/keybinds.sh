@@ -114,7 +114,7 @@ while IFS= read -r line; do
 done < "$HYPR_CONF"
 
 # Display bindings in rofi
-CHOICE=$(printf "%s\n" "${BINDINGS[@]}" | rofi -dmenu -i -p "Hyprland Keybinds")
+CHOICE=$(printf "%s\n" "${BINDINGS[@]}" | rofi -dmenu -i -p "Keybinds")
 [[ -z $CHOICE ]] && exit 0
 
 # Find selected binding index
