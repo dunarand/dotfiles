@@ -33,4 +33,3 @@ swww img "${FILES[$INDEX]}" \
 # Notify
 NAME=$(basename "$CURRENT_MOOD")
 FILE=$(basename "${FILES[$INDEX]}")
-notify-send "Wallpaper: $NAME" "$FILE"
