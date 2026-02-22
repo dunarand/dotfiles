@@ -28,6 +28,7 @@ curl
 dart-sass
 desktop-file-utils
 easyeffects
+eza
 fd
 fftw
 fzf
@@ -63,7 +64,7 @@ npm
 ntfs-3g
 p7zip
 pkgconf
-polkit-gnome
+polkit
 power-profiles-daemon
 pulseaudio
 python
@@ -75,6 +76,7 @@ seahorse
 shared-mime-info
 slurp
 sqlitebrowser
+starship
 swww
 tesseract
 tesseract-data-eng
@@ -112,3 +114,11 @@ zam-plugins-lv2
 zig
 zip
 zoxide
+
+
+
+
+
+sudo pacman -S qt5ct qt6ct
+
+adw-gtk-theme

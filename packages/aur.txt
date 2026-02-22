@@ -8,6 +8,7 @@ google-chrome
 grimblast
 jupyter-nbformat
 jupyter-notebook
+hyprdrover
 localsend-bin
 marktext-bin
 obsidian
