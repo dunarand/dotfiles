@@ -8,6 +8,7 @@ rustup
 nodejs
 
 # ALPHABETICAL
+adw-gtk-theme
 alsa-lib
 archlinux-xdg-menu
 base-devel
@@ -21,16 +22,18 @@ brightnessctl
 btop
 calf
 cargo
-cava
 cliphist
+cloudflare-speed-cli
 cmake
 curl
 dart-sass
 desktop-file-utils
+discover
 easyeffects
 eza
 fd
 fftw
+flatpak
 fzf
 gcc
 gdb
@@ -70,6 +73,8 @@ pulseaudio
 python
 python-virtualenv
 qbittorrent
+qt5ct
+qt6ct
 ripgrep
 rofi
 seahorse
@@ -119,6 +124,3 @@ zoxide
 
 
 
-sudo pacman -S qt5ct qt6ct
-
-adw-gtk-theme

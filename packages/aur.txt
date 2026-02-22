@@ -2,17 +2,34 @@
 python-pynvim
 
 # ALPHABETICAL
+aylurs-gtk-shell-git
+bluez
+bluez-utils
+brightnessctl
+cava
+dart-sass
 dbeaver
 discord
 google-chrome
 grimblast
+grimblast
+gtksourceview3
+gvfs
+hyprdrover
+hyprpicker
 jupyter-nbformat
 jupyter-notebook
-hyprdrover
+libgtop
+libsoup3
 localsend-bin
 marktext-bin
+networkmanager
 obsidian
+pacman-contrib
+power-profiles-daemon
 pycharm-community-edition
+python
+python-gpustat
 python-gpustat
 python-ipykernel
 python-jupyter-client
@@ -20,6 +37,12 @@ python-pillow
 rustdesk-bin
 spotify
 steam
+swww
 tad-bin
+upower
 visual-studio-code-bin
 wf-recorder
+wf-recorder
+wireplumber
+wl-clipboard
+yay -S ags-hyprpanel-git

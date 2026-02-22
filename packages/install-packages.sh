@@ -84,13 +84,8 @@ if in_array "$OS" "${ARCH_DISTROS[@]}"; then
             echo -e "${BLUE}Installing AUR packages...${NC}"
             install_from_file "$PACKAGES_DIR/aur.txt" "yay -S --needed"
         fi
-    elif command -v paru &> /dev/null; then
-        if [ -f "$PACKAGES_DIR/aur.txt" ]; then
-            echo -e "${BLUE}Installing AUR packages...${NC}"
-            install_from_file "$PACKAGES_DIR/aur.txt" "paru -S --needed"
-        fi
     else
-        echo -e "${YELLOW}No AUR helper found (yay/paru). Skipping AUR packages.${NC}"
+        echo -e "${YELLOW}No AUR helper found (yay). Skipping AUR packages.${NC}"
         echo -e "${YELLOW}Install yay with: git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si${NC}"
     fi
 
