@@ -45,6 +45,7 @@ htop
 hypridle
 hyprlock
 hyprpicker
+hyprpolkitagent
 imagemagick
 iniparser
 kate
@@ -69,7 +70,6 @@ p7zip
 pkgconf
 polkit
 power-profiles-daemon
-pulseaudio
 python
 python-virtualenv
 qbittorrent
@@ -123,4 +123,6 @@ zoxide
 
 
 
-
+packagekit-qt6
+nemo
+gwenview

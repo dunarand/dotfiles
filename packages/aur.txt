@@ -2,6 +2,7 @@
 python-pynvim
 
 # ALPHABETICAL
+ags-hyprpanel-git
 aylurs-gtk-shell-git
 bluez
 bluez-utils
@@ -45,4 +46,3 @@ wf-recorder
 wf-recorder
 wireplumber
 wl-clipboard
-yay -S ags-hyprpanel-git
