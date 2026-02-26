@@ -11,6 +11,15 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo -e "${GREEN}Installing dotfiles from ${DOTFILES_DIR}${NC}"
 
+echo -e "\n${BLUE}How should existing files at target locations be handled?${NC}"
+echo "1) Backup (rename to .backup)"
+echo "2) Skip"
+read -p "Select an option [1-2]: " CONFLICT_STRATEGY
+case "$CONFLICT_STRATEGY" in
+    2) echo -e "${YELLOW}Existing files will be skipped${NC}" ;;
+    *) CONFLICT_STRATEGY=1; echo -e "${YELLOW}Existing files will be backed up${NC}" ;;
+esac
+
 ask_confirmation() {
     local prompt=$1
     while true; do
@@ -30,8 +39,13 @@ create_symlink() {
     mkdir -p "$(dirname "$target")"
 
     if [ -e "$target" ] && [ ! -L "$target" ]; then
-        echo -e "${YELLOW}Backing up existing $target to $target.backup${NC}"
-        mv "$target" "$target.backup"
+        if [ "$CONFLICT_STRATEGY" = "2" ]; then
+            echo -e "${YELLOW}! Skipping $target (already exists)${NC}"
+            return
+        else
+            echo -e "${YELLOW}Backing up existing $target to $target.backup${NC}"
+            mv "$target" "$target.backup"
+        fi
     fi
 
     if [ -L "$target" ]; then
@@ -73,30 +87,30 @@ handle_config_scripts_permissions() {
     case "$choice" in
         1)
             echo -e "\n${GREEN}Making all config scripts executable...${NC}"
-            find "$config_dir" -type f -name "*.sh" | while read -r file; do
+            while IFS= read -r file; do
                 chmod_script_if_valid "$file"
-            done
+            done < <(find "$config_dir" -type f -name "*.sh")
             ;;
         2)
             echo -e "\n${GREEN}Prompting per directory...${NC}"
-            find "$config_dir" -type d | while read -r dir; do
+            while IFS= read -r dir; do
                 scripts=$(find "$dir" -maxdepth 1 -type f -name "*.sh")
                 [ -z "$scripts" ] && continue
 
                 if ask_confirmation "Make scripts in $(realpath --relative-to="$DOTFILES_DIR" "$dir") executable?"; then
-                    for file in $scripts; do
+                    while IFS= read -r file; do
                         chmod_script_if_valid "$file"
-                    done
+                    done < <(find "$dir" -maxdepth 1 -type f -name "*.sh")
                 fi
-            done
+            done < <(find "$config_dir" -type d)
             ;;
         3)
             echo -e "\n${GREEN}Prompting per script...${NC}"
-            find "$config_dir" -type f -name "*.sh" | while read -r file; do
+            while IFS= read -r file; do
                 if ask_confirmation "Make $(realpath --relative-to="$DOTFILES_DIR" "$file") executable?"; then
                     chmod_script_if_valid "$file"
                 fi
-            done
+            done < <(find "$config_dir" -type f -name "*.sh")
             ;;
         *)
             echo -e "${YELLOW}Skipped config script permissions${NC}"
@@ -110,7 +124,7 @@ handle_config_scripts_permissions() {
 
 if ask_confirmation "Install home directory dotfiles?"; then
     echo -e "\n${GREEN}Installing home directory dotfiles...${NC}"
-    for file in "$DOTFILES_DIR"/home/.*; do
+    for file in "$DOTFILES_DIR"/home/* "$DOTFILES_DIR"/home/.*; do
         base="$(basename "$file")"
         if [ "$base" != "." ] && [ "$base" != ".." ]; then
             create_symlink "$file" "$HOME/$base"
@@ -127,9 +141,10 @@ fi
 if [ -d "$DOTFILES_DIR/config" ]; then
     if ask_confirmation "Install .config directory files?"; then
         echo -e "\n${GREEN}Installing .config directory files...${NC}"
-        for dir in "$DOTFILES_DIR"/config/*; do
-            [ -d "$dir" ] || continue
-            create_symlink "$dir" "$HOME/.config/$(basename "$dir")"
+
+        for item in "$DOTFILES_DIR"/config/*; do
+            [ -d "$item" ] && create_symlink "$item" "$HOME/.config/$(basename "$item")"
+            [ -f "$item" ] && create_symlink "$item" "$HOME/.config/$(basename "$item")"
         done
 
         handle_config_scripts_permissions
@@ -147,7 +162,7 @@ if [ -d "$DOTFILES_DIR/scripts" ]; then
         echo -e "\n${GREEN}Installing scripts...${NC}"
         mkdir -p "$HOME/.local/bin"
 
-        for script in "$DOTFILES_DIR"/scripts/*.sh; do
+        for script in "$DOTFILES_DIR"/scripts/*; do
             [ -f "$script" ] || continue
             create_symlink "$script" "$HOME/.local/bin/$(basename "$script")"
             chmod_script_if_valid "$script"
@@ -158,4 +173,4 @@ if [ -d "$DOTFILES_DIR/scripts" ]; then
 fi
 
 echo -e "\n${GREEN}Dotfiles installation complete!${NC}"
-echo -e "${YELLOW}Note: You may need to restart your shell or reload Waybar/Hyprland${NC}"
+echo -e "${YELLOW}Note: You may need to restart your shell or reload Hyprland and other connected components.${NC}"
