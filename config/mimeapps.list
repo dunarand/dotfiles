@@ -1,0 +1,17 @@
+[Added Associations]
+text/plain=nvim.desktop;
+application/x-zerosize=nvim.desktop;
+image/jpeg=org.kde.gwenview.desktop;
+image/png=org.kde.gwenview.desktop;
+
+[Default Applications]
+text/html=google-chrome.desktop
+text/plain=nvim.desktop;
+x-scheme-handler/about=google-chrome.desktop
+x-scheme-handler/http=google-chrome.desktop
+x-scheme-handler/https=google-chrome.desktop
+x-scheme-handler/unknown=google-chrome.desktop
+image/jpeg=org.kde.gwenview.desktop
+image/png=org.kde.gwenview.desktop
+inode/directory=org.kde.dolphin.desktop
+application/x-directory=org.kde.dolphin.desktop
