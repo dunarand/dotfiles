@@ -202,7 +202,7 @@ alias jctl='journalctl -p 3 -xb'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias rg='rg ---color=auto'
+alias rg='rg --color=auto'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 
