@@ -1,0 +1,16 @@
+[General]
+ColorScheme=Catppuccin-Mocha
+Name=Catppuccin-Mocha
+TerminalApplication=ghostty
+TerminalExec=ghostty
+
+[Icons]
+Theme=catppuccin-mocha-dark
+
+[KDE]
+ShowDeleteCommand=false
+widgetStyle=kvantum
+
+[PreviewSettings]
+EnableRemoteFolderThumbnail=false
+MaximumRemoteSize=0
