@@ -8,4 +8,5 @@ return {
 	{ "ThePrimeagen/vim-be-good" },
 	{ "nvim-tree/nvim-web-devicons" },
     { "Vimjas/vim-python-pep8-indent", ft = "python" },
+    { "tpope/vim-obsession" },
 }
