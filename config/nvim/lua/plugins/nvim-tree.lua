@@ -1,10 +1,10 @@
-local yellow = "#f3e790"
-local orange = "#ff964f"
-local red = "#ff6961"
-local blue = "#4f7292"
-local green = "#b2fba5"
-local grey = "#717382"
-local white = "#dcdcdc"
+local yellow = "#f9e2af"
+local orange = "#fab387"
+local red = "#f38ba8"
+local blue = "#89b4fa"
+local green = "#a6e3a1"
+local grey = "#6c7086"
+local white = "#cdd6f4"
 
 return {
 	"nvim-tree/nvim-tree.lua",
@@ -153,7 +153,7 @@ return {
 		vim.keymap.set("n", "<C-n>", function()
 			require("nvim-tree.api").tree.toggle()
 		end, { desc = "Toggle nvim-tree", silent = true })
-		
+
 		-- Auto-focus on file when buffer changes (only for actual file buffers)
 		vim.api.nvim_create_autocmd("BufEnter", {
 			group = vim.api.nvim_create_augroup("NvimTreeAutoFocus", { clear = true }),
