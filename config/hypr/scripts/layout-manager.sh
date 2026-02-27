@@ -61,7 +61,7 @@ sanitize_exec_paths() {
 }
 
 show_main_menu() {
-    printf "💾 Save Current Layout\n📂 Load Saved Layout\n🗑️ Delete Layout" \
+    printf "📂 Load Saved Layout\n💾 Save Current Layout\n🗑️ Delete Layout" \
         | rofi -dmenu -i -p "Layout Manager" \
             -theme-str 'window {width: 420px;}' \
             -theme-str 'listview {lines: 3;}'
@@ -69,19 +69,6 @@ show_main_menu() {
 
 select_layout() {
     ls "$SESSIONS_DIR"/*.json 2> /dev/null | xargs -n1 basename | sed 's/.json$//'
-}
-
-save_layout() {
-    layout_name=$(rofi -dmenu -p "Enter layout name" -theme-str 'window {width: 400px;}')
-    [[ -z "$layout_name" ]] && notify-send "Cancelled" "Save cancelled" && exit 0
-
-    if hyprdrover --save "$layout_name"; then
-        json="$SESSIONS_DIR/${layout_name}.json"
-        sanitize_exec_paths "$json"
-        notify-send "Layout Saved" "'$layout_name' saved"
-    else
-        notify-send "Error" "Could not save '$layout_name'" -u critical
-    fi
 }
 
 load_layout() {
@@ -95,6 +82,19 @@ load_layout() {
         notify-send "Layout Loaded" "'$selected' loaded"
     else
         notify-send "Error" "Could not load '$selected'" -u critical
+    fi
+}
+
+save_layout() {
+    layout_name=$(rofi -dmenu -p "Enter layout name" -theme-str 'window {width: 400px;}')
+    [[ -z "$layout_name" ]] && notify-send "Cancelled" "Save cancelled" && exit 0
+
+    if hyprdrover --save "$layout_name"; then
+        json="$SESSIONS_DIR/${layout_name}.json"
+        sanitize_exec_paths "$json"
+        notify-send "Layout Saved" "'$layout_name' saved"
+    else
+        notify-send "Error" "Could not save '$layout_name'" -u critical
     fi
 }
 
@@ -114,8 +114,8 @@ delete_layout() {
 choice="$(show_main_menu)"
 
 case "$choice" in
-    "💾 Save Current Layout") save_layout ;;
     "📂 Load Saved Layout") load_layout ;;
+    "💾 Save Current Layout") save_layout ;;
     "🗑️ Delete Layout") delete_layout ;;
     *) exit 0 ;;
 esac
