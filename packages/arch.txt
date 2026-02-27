@@ -38,6 +38,7 @@ fzf
 gcc
 gdb
 ghostty
+gnome-disk-utility
 gnome-keyring
 grim
 gvfs
@@ -45,7 +46,6 @@ htop
 hypridle
 hyprlock
 hyprpicker
-hyprpolkitagent
 imagemagick
 iniparser
 kate
@@ -69,6 +69,7 @@ ntfs-3g
 p7zip
 pkgconf
 polkit
+polkit-gnome
 power-profiles-daemon
 python
 python-virtualenv
