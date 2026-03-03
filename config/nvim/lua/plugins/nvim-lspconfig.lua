@@ -101,7 +101,7 @@ return {
 					python = {
 						analysis = {
 							typeCheckingMode = "basic",
-							diagnosticMode = "workspace",
+							diagnosticMode = "openFilesOnly",
 							reportUnusedImport = "none",
 							reportDuplicateImport = "none",
 						},
