@@ -36,6 +36,7 @@ python-ipykernel
 python-jupyter-client
 python-pillow
 rustdesk-bin
+spicetify-cli
 spotify
 steam
 swww
@@ -46,3 +47,6 @@ wf-recorder
 wf-recorder
 wireplumber
 wl-clipboard
+
+
+valuta
