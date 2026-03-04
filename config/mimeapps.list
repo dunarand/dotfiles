@@ -1,8 +1,13 @@
 [Added Associations]
 text/plain=nvim.desktop;
 application/x-zerosize=nvim.desktop;
-image/jpeg=org.kde.gwenview.desktop;
-image/png=org.kde.gwenview.desktop;
+image/jpeg=org.kde.gwenview.desktop;org.gnome.Loupe.desktop;
+image/png=org.kde.gwenview.desktop;org.gnome.Loupe.desktop;
+audio/mpeg=io.bassi.Amberol.desktop;
+video/mp4=org.gnome.Showtime.desktop;
+application/pdf=org.gnome.Evince.desktop;
+text/x-python=nvim.desktop;
+text/x-tex=texstudio.desktop;
 
 [Default Applications]
 text/html=google-chrome.desktop
@@ -11,7 +16,13 @@ x-scheme-handler/about=google-chrome.desktop
 x-scheme-handler/http=google-chrome.desktop
 x-scheme-handler/https=google-chrome.desktop
 x-scheme-handler/unknown=google-chrome.desktop
-image/jpeg=org.kde.gwenview.desktop
-image/png=org.kde.gwenview.desktop
-inode/directory=org.kde.dolphin.desktop
-application/x-directory=org.kde.dolphin.desktop
+image/jpeg=org.gnome.Loupe.desktop
+image/png=org.gnome.Loupe.desktop
+inode/directory=org.gnome.Nautilus.desktop
+application/x-directory=org.gnome.Nautilus.desktop
+x-scheme-handler/betterdiscord=discord.desktop
+audio/mpeg=io.bassi.Amberol.desktop
+video/mp4=org.gnome.Showtime.desktop
+application/pdf=org.gnome.Evince.desktop
+text/x-python=nvim.desktop
+text/x-tex=texstudio.desktop
