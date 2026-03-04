@@ -513,7 +513,7 @@
   "bar.customModules.power.middleClick": "",
   "bar.bluetooth.rightClick": "hyprctl dispatch exec [float] blueman-adapters",
   "bar.network.rightClick": "",
-  "bar.customModules.cpu.middleClick": "hyprctl dispatch exec \"[float;size 1000 690;center]\" \"flatpak run io.missioncenter.MissionCenter\"",
+  "bar.customModules.cpu.middleClick": "hyprctl dispatch exec \"resources\"",
   "bar.volume.rightClick": "",
   "bar.volume.scrollDown": "hyprpanel vol -5",
   "bar.volume.scrollUp": "hyprpanel vol +5",
