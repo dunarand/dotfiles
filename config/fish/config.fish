@@ -20,6 +20,8 @@ set -gx BAT_THEME "Catppuccin Mocha"
 set -gx MANROFFOPT "-c"
 set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
+direnv hook fish | source
+
 # ----------------------------------------------------------------------------
 # PATH Configuration
 # ----------------------------------------------------------------------------
