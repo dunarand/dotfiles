@@ -1,15 +1,18 @@
 #!/bin/bash
 
-KEYBOARD="royuan-gaming-keyboard"
+CURRENT=$(
+    hyprctl devices -j |
+        jq -r '.keyboards[] | .active_keymap' |
+        head -n1 |
+        cut -c1-2 |
+        tr 'a-z' 'A-Z'
+)
 
-# Switch to next layout
-hyprctl switchxkblayout "$KEYBOARD" next
+# Decide next layout
+if [ "$CURRENT" = "EN" ]; then
+    NEXT="tr"
+else
+    NEXT="us"
+fi
 
-# Get updated keymap name
-LAYOUT=$(hyprctl devices -j | jq -r '
-  .keyboards[]
-  | select(.name=="'"$KEYBOARD"'")
-  | .active_keymap
-')
-
-notify-send "Keyboard Layout" "$LAYOUT"
+hyprctl keyword input:kb_layout "$NEXT"
