@@ -30,6 +30,7 @@ curl
 dart-sass
 desktop-file-utils
 dialect
+direnv
 discover
 easyeffects
 evince
@@ -47,6 +48,7 @@ gnome-font-viewer
 gnome-keyring
 gnome-music
 gnome-system-monitor
+gocrpytfs
 grim
 gvfs
 gwenview

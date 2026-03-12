@@ -24,6 +24,7 @@ libgtop
 libsoup3
 localsend-bin
 marktext-bin
+nautilus-open-any-terminal
 networkmanager
 obsidian
 pacman-contrib
@@ -42,11 +43,9 @@ steam
 swww
 tad-bin
 upower
+valuta
 visual-studio-code-bin
 wf-recorder
 wf-recorder
 wireplumber
 wl-clipboard
-
-
-valuta
