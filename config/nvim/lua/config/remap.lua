@@ -24,13 +24,14 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 vim.keymap.set("n", "n", "nzzzv", { desc = "Next occurence" })
 vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous occurence" })
 
-vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without register" })
+vim.keymap.set("v", "gj", [[:join<CR>]], { desc = "Combine paragraph into single line" })
 
 -- Yanking
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
 
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without register" })
+vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without register" })
 
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
