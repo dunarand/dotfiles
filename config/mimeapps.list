@@ -1,6 +1,6 @@
 [Added Associations]
 text/plain=nvim.desktop;
-application/x-zerosize=nvim.desktop;
+application/x-zerosize=nvim.desktop;libreoffice-writer.desktop;
 image/jpeg=org.kde.gwenview.desktop;org.gnome.Loupe.desktop;
 image/png=org.kde.gwenview.desktop;org.gnome.Loupe.desktop;
 audio/mpeg=io.bassi.Amberol.desktop;
@@ -30,3 +30,4 @@ text/x-python=nvim.desktop
 text/x-tex=texstudio.desktop
 text/csv=tad.desktop
 application/json=nvim.desktop
+application/x-zerosize=libreoffice-writer.desktop
