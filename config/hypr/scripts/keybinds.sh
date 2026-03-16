@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HYPR_CONF="$HOME/.config/hypr/hyprland.conf"
+HYPR_CONF="$HOME/.config/hypr/keybinds.conf"
 
 declare -A KEY_GLYPHS=(
     ["SUPER"]=""
