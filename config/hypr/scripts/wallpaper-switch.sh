@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE="$HOME/Pictures/wallpapers"
+BASE="$HOME/Pictures/Wallpapers"
 
 MOOD_FILE="$HOME/.cache/wallpaper_mood"
 INDEX_FILE="$HOME/.cache/wallpaper_index"
