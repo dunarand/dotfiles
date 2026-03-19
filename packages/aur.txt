@@ -2,8 +2,6 @@
 python-pynvim
 
 # ALPHABETICAL
-ags-hyprpanel-git
-aylurs-gtk-shell-git
 bluez
 bluez-utils
 brightnessctl
@@ -12,7 +10,6 @@ dart-sass
 dbeaver
 discord
 google-chrome
-grimblast
 grimblast
 gtksourceview3
 gvfs
@@ -24,15 +21,12 @@ libgtop
 libsoup3
 localsend-bin
 marktext-bin
-nautilus-open-any-terminal
+noctalia-shell
 networkmanager
 obsidian
-pacman-contrib
 power-profiles-daemon
 pycharm-community-edition
 python
-python-gpustat
-python-gpustat
 python-ipykernel
 python-jupyter-client
 python-pillow
@@ -45,7 +39,5 @@ tad-bin
 upower
 valuta
 visual-studio-code-bin
-wf-recorder
-wf-recorder
 wireplumber
 wl-clipboard
