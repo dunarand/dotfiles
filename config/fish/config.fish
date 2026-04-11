@@ -39,6 +39,13 @@ if test -d ~/Applications/depot_tools
     end
 end
 
+# Add go to PATH
+if test -d ~/go/bin
+    if not contains -- ~/go/bin $PATH
+        set -p PATH ~/go/bin
+    end
+end
+
 # ----------------------------------------------------------------------------
 # Greeting
 # ----------------------------------------------------------------------------
@@ -260,3 +267,5 @@ end
 if test -f ~/.fish_profile
     source ~/.fish_profile
 end
+
+fish_add_path /home/dunarand/.spicetify
