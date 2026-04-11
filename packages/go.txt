@@ -1,0 +1,1 @@
+github.com/probeldev/niri-screen-time@latest

@@ -41,3 +41,5 @@ valuta
 visual-studio-code-bin
 wireplumber
 wl-clipboard
+
+quickshell-overview-git

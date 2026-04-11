@@ -36,6 +36,7 @@ easyeffects
 evince
 eza
 fd
+ffmpeg
 fftw
 flatpak
 fzf
@@ -48,7 +49,7 @@ gnome-font-viewer
 gnome-keyring
 gnome-music
 gnome-system-monitor
-gocrpytfs
+go
 grim
 gvfs
 htop
@@ -56,7 +57,7 @@ hypridle
 hyprpicker
 imagemagick
 iniparser
-kate
+kdeconnect
 lazygit
 libgtop
 libnotify
@@ -128,6 +129,7 @@ texlive-publishers
 texstudio
 thunderbird
 tmux
+translate-shell
 trash-cli
 ttf-jetbrains-mono
 ttf-jetbrains-mono-nerd
@@ -137,12 +139,14 @@ unzip
 upower
 vlc
 wezterm
+wf-recorder
 wget
 wireplumber
 wl-clipboard
 xdg-user-dirs
 xdg-utils
 zam-plugins-lv2
+zbar
 zig
 zip
 zoxide
