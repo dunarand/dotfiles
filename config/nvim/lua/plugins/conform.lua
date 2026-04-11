@@ -78,7 +78,7 @@ return {
 						"--single-quote",
 						"false",
 						"--trailing-comma",
-						"es5",
+						"none",
 						"--print-width",
 						"80",
 					},
