@@ -2,9 +2,11 @@
 
 HYPR_CONF="$HOME/.config/hypr/keybinds.conf"
 
+# --- GLYPHS --------------------------------------------------
+
 declare -A KEY_GLYPHS=(
     ["SUPER"]=""
-    ["CTRL"]="⌃"
+    ["CTRL"]="󰘴"
     ["ALT"]="⌥"
     ["SHIFT"]="⇧"
     ["SPACE"]="󱁐"
@@ -31,9 +33,8 @@ declare -A KEY_GLYPHS=(
     ["F12"]="󱊶"
 )
 
-# Convert key names to glyphs
 beautify_keys() {
-    local input="${1/\$mainMod/SUPER}"
+    local input="${1/\$mod/SUPER}"
     local out=""
 
     for token in $input; do
@@ -47,7 +48,6 @@ beautify_keys() {
     echo "${out% }"
 }
 
-# Trim leading and trailing whitespace
 trim() {
     local var="$1"
     var="${var#"${var%%[![:space:]]*}"}"
@@ -55,9 +55,11 @@ trim() {
     echo "$var"
 }
 
-# Parse Hyprland variable definitions
+# --- LOAD $VARS --------------------------------------------------
+
 declare -A HYPR_VARS
 
+# Load from *this* file
 while IFS= read -r line; do
     if [[ $line =~ ^\$([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*=[[:space:]]*(.+)$ ]]; then
         var_name="${BASH_REMATCH[1]}"
@@ -66,7 +68,15 @@ while IFS= read -r line; do
     fi
 done < "$HYPR_CONF"
 
-# Expand Hyprland variables in command strings
+# ALSO load from hyprland.conf (your program vars)
+while IFS= read -r line; do
+    if [[ $line =~ ^\$([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*=[[:space:]]*(.+)$ ]]; then
+        var_name="${BASH_REMATCH[1]}"
+        var_value=$(trim "${BASH_REMATCH[2]%%#*}")
+        HYPR_VARS[$var_name]="$var_value"
+    fi
+done < "$HOME/.config/hypr/hyprland.conf"
+
 expand_vars() {
     local str="$1"
     for var in "${!HYPR_VARS[@]}"; do
@@ -75,67 +85,77 @@ expand_vars() {
     echo "$str"
 }
 
-# Parse keybindings
+# --- PARSE BINDINGS --------------------------------------------
+
 BINDINGS=()
 COMMANDS=()
 
-while IFS= read -r line; do
-    [[ $line =~ ^bind ]] || continue
+while IFS= read -r raw; do
+    [[ $raw =~ ^bindd ]] || [[ $raw =~ ^binddl ]] || continue
 
-    # Skip lines with # ignore
-    [[ $line =~ \#[[:space:]]*ignore ]] && continue
+    # remove inline comments
+    line="${raw%%#*}"
 
-    # Extract description from comment
-    desc=""
-    if [[ $line == *"#"* ]]; then
-        desc=$(trim "${line#*#}")
-        line="${line%%#*}"
-    fi
-
-    # Remove bind prefix and parse fields
+    # cut before '='
     line="${line#*=}"
-    IFS=',' read -r mod key rest <<< "$line"
 
-    mod=$(trim "$mod")
-    key=$(trim "$key")
-    rest=$(trim "$rest")
+    # split *all* comma fields into an array
+    IFS=',' read -ra fields <<< "$line"
+    for i in "${!fields[@]}"; do
+        fields[$i]=$(trim "${fields[$i]}")
+    done
 
-    [[ -z $rest ]] && continue
+    # must have at least 4 fields
+    [[ ${#fields[@]} -ge 4 ]] || continue
 
-    # Convert commas to spaces and expand variables
-    rest="${rest//,/ }"
-    rest=$(expand_vars "$rest")
+    mod="${fields[0]}"
+    key="${fields[1]}"
+    desc="${fields[2]}"
+    cmd="${fields[3]}"
 
-    # Store binding and command
+    # args = EVERYTHING after field 3
+    args="${fields[*]:4}"
+
+    [[ -z $desc ]] && desc="No description"
+
+    # pretty keys
     mod_b=$(beautify_keys "$mod")
     key_b=$(beautify_keys "$key")
-    BINDINGS+=("${mod_b} + ${key_b}  ${desc:-No description}")
-    COMMANDS+=("$rest")
+
+    # expand vars
+    cmd_expanded=$(expand_vars "$cmd")
+    args_expanded=$(expand_vars "$args")
+
+    BINDINGS+=("${mod_b} + ${key_b}  ${desc}")
+    COMMANDS+=("$cmd_expanded|$args_expanded")
+
 done < "$HYPR_CONF"
 
-# Display bindings in rofi
+# --- SELECT ----------------------------------------------------
+
 CHOICE=$(printf "%s\n" "${BINDINGS[@]}" | rofi -dmenu -i -p "Keybinds")
 [[ -z $CHOICE ]] && exit 0
 
-# Find selected binding index
 INDEX=-1
 for i in "${!BINDINGS[@]}"; do
-    if [[ ${BINDINGS[$i]} == "$CHOICE" ]]; then
-        INDEX=$i
-        break
-    fi
+    [[ ${BINDINGS[$i]} == "$CHOICE" ]] && INDEX=$i && break
 done
 
 [[ $INDEX -eq -1 ]] && exit 1
 
-# Execute command
-CMD="${COMMANDS[$INDEX]}"
-[[ -z $CMD ]] && exit 0
+# --- EXECUTE ---------------------------------------------------
 
-if [[ $CMD == exec* ]]; then
-    CMD=$(trim "${CMD#exec}")
-    bash -c "$CMD" &
-    disown
+CMD_RAW="${COMMANDS[$INDEX]}"
+
+cmd="${CMD_RAW%%|*}"
+args="${CMD_RAW#*|}"
+
+cmd=$(trim "$cmd")
+args=$(trim "$args")
+
+# Hyprland exec MUST be run via hyprctl
+if [[ $cmd == "exec" ]]; then
+    hyprctl dispatch exec "$args"
 else
-    hyprctl dispatch $CMD
+    hyprctl dispatch "$cmd" "$args"
 fi
