@@ -30,5 +30,5 @@ text/x-python=nvim.desktop
 text/x-tex=texstudio.desktop
 text/csv=tad.desktop
 application/json=nvim.desktop
-application/x-zerosize=libreoffice-writer.desktop
+application/x-zerosize=nvim.desktop
 x-scheme-handler/mailto=org.mozilla.Thunderbird.desktop;
