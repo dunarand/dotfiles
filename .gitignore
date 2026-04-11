@@ -5,14 +5,5 @@ TODO.txt
 
 lazy-lock.json
 
-config/easyeffects/db/
-
-config/fish/*
-!config/fish/config.fish
-!config/fish/themes/
-
-config/marktext/*
-!config/marktext/preferences.json
-
 *.swp
 *.backup
