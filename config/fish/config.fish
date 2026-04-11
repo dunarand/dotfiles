@@ -50,7 +50,7 @@ end
 # Greeting
 # ----------------------------------------------------------------------------
 function fish_greeting
-    fastfetch
+    fastfetch --config ~/.config/fastfetch/greeting.jsonc
 end
 
 # ----------------------------------------------------------------------------
