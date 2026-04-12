@@ -6,7 +6,7 @@
         "clipboardWrapText": true,
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
-        "density": "compact",
+        "density": "default",
         "enableClipPreview": true,
         "enableClipboardChips": true,
         "enableClipboardHistory": true,
@@ -31,7 +31,7 @@
         "showIconBackground": false,
         "sortByMostUsed": true,
         "terminalCommand": "ghostty -e",
-        "viewMode": "grid"
+        "viewMode": "list"
     },
     "audio": {
         "mprisBlacklist": [
@@ -48,7 +48,7 @@
     "bar": {
         "autoHideDelay": 500,
         "autoShowDelay": 150,
-        "backgroundOpacity": 0.9,
+        "backgroundOpacity": 1,
         "barType": "framed",
         "capsuleColorKey": "none",
         "capsuleOpacity": 1,
@@ -62,7 +62,7 @@
         "hideOnOverview": false,
         "marginHorizontal": 4,
         "marginVertical": 4,
-        "middleClickAction": "launcherPanel",
+        "middleClickAction": "settings",
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
         "monitors": [
@@ -74,7 +74,7 @@
         "reverseScroll": false,
         "rightClickAction": "controlCenter",
         "rightClickCommand": "",
-        "rightClickFollowMouse": false,
+        "rightClickFollowMouse": true,
         "screenOverrides": [
             {
                 "enabled": true,
@@ -460,10 +460,10 @@
     "desktopWidgets": {
         "enabled": true,
         "gridSnap": true,
-        "gridSnapScale": false,
+        "gridSnapScale": true,
         "monitorWidgets": [
             {
-                "name": "HDMI-A-1",
+                "name": "DP-2",
                 "widgets": [
                     {
                         "clockColor": "none",
@@ -472,11 +472,11 @@
                         "format": "HH:mm\\ndd.MM.yyyy",
                         "id": "Clock",
                         "roundedCorners": true,
-                        "scale": 1.5326871084938658,
+                        "scale": 2.5,
                         "showBackground": false,
                         "useCustomFont": false,
-                        "x": 880,
-                        "y": 80
+                        "x": 1148,
+                        "y": 60
                     }
                 ]
             }
@@ -489,7 +489,7 @@
         "colorizeIcons": false,
         "deadOpacity": 0.6,
         "displayMode": "auto_hide",
-        "dockType": "attached",
+        "dockType": "floating",
         "enabled": true,
         "floatingRatio": 1,
         "groupApps": true,
@@ -497,29 +497,29 @@
         "groupContextMenuMode": "extended",
         "groupIndicatorStyle": "dots",
         "inactiveIndicators": true,
-        "indicatorColor": "primary",
-        "indicatorOpacity": 0.6,
+        "indicatorColor": "error",
+        "indicatorOpacity": 0.8,
         "indicatorThickness": 3,
         "launcherIcon": "",
-        "launcherIconColor": "none",
+        "launcherIconColor": "tertiary",
         "launcherPosition": "end",
         "launcherUseDistroLogo": true,
         "monitors": [
         ],
         "onlySameOutput": true,
         "pinnedApps": [
-            "com.mitchellh.ghostty",
             "brave-browser",
+            "com.mitchellh.ghostty",
             "steam",
             "discord",
             "spotify"
         ],
         "pinnedStatic": true,
-        "position": "top",
+        "position": "bottom",
         "showDockIndicator": true,
         "showLauncherIcon": true,
         "sitOnFrame": true,
-        "size": 1
+        "size": 1.5
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
@@ -532,7 +532,7 @@
         "clockFormat": "hh\\nmm",
         "clockStyle": "custom",
         "compactLockScreen": false,
-        "dimmerOpacity": 0.15,
+        "dimmerOpacity": 0.1,
         "enableBlurBehind": true,
         "enableLockScreenCountdown": true,
         "enableLockScreenMediaControls": false,
@@ -574,8 +574,8 @@
         "passwordChars": true,
         "radiusRatio": 0.5,
         "reverseScroll": false,
-        "scaleRatio": 0.9500000000000001,
-        "screenRadiusRatio": 0.5,
+        "scaleRatio": 1,
+        "screenRadiusRatio": 0.74,
         "shadowDirection": "bottom_right",
         "shadowOffsetX": 2,
         "shadowOffsetY": 3,
@@ -625,7 +625,7 @@
         "use12hourFormat": false,
         "useFahrenheit": false,
         "weatherEnabled": true,
-        "weatherShowEffects": false,
+        "weatherShowEffects": true,
         "weatherTaliaMascotAlways": false
     },
     "network": {
@@ -803,15 +803,15 @@
         "enableUserTheming": false
     },
     "ui": {
-        "boxBorderEnabled": true,
+        "boxBorderEnabled": false,
         "fontDefault": "JetBrainsMono NF",
         "fontDefaultScale": 0.95,
         "fontFixed": "monospace",
         "fontFixedScale": 0.95,
-        "panelBackgroundOpacity": 0.9,
+        "panelBackgroundOpacity": 0.6,
         "panelsAttachedToBar": true,
-        "scrollbarAlwaysVisible": true,
-        "settingsPanelMode": "attached",
+        "scrollbarAlwaysVisible": false,
+        "settingsPanelMode": "window",
         "settingsPanelSideBarCardStyle": false,
         "tooltipsEnabled": true,
         "translucentWidgets": false
@@ -865,7 +865,7 @@
         "overviewBlur": 0.4,
         "overviewEnabled": false,
         "overviewTint": 0.6,
-        "panelPosition": "follow_bar",
+        "panelPosition": "center",
         "randomIntervalSec": 300,
         "setWallpaperOnAllMonitors": true,
         "showHiddenFiles": false,
