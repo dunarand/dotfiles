@@ -121,7 +121,7 @@
       "type": "monitor",
       "key": "╭─󰍹",
       "keyColor": "blue",
-      "format": "{name} {height}x{width} px @ {refresh-rate}"
+      "format": "{name} {width}x{height} px @ {refresh-rate} Hz"
     },
     {
       "type": "sound",
