@@ -31,6 +31,13 @@ declare -A KEY_GLYPHS=(
     ["F10"]="󱊴"
     ["F11"]="󱊵"
     ["F12"]="󱊶"
+    ["mouse:272"]="󰍽󰬺"
+    ["mouse:273"]="󰍽󰬻"
+    ["mouse:274"]="󰍽󰬼"
+    ["mouse:btn_side"]="󰍽󰬽"
+    ["mouse:btn_extra"]="󰍽󰬾"
+    # [""]="󰍽↑"
+    # [""]="󰍽↓"
 )
 
 beautify_keys() {
