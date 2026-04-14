@@ -36,8 +36,8 @@ declare -A KEY_GLYPHS=(
     ["mouse:274"]="󰍽󰬼"
     ["mouse:btn_side"]="󰍽󰬽"
     ["mouse:btn_extra"]="󰍽󰬾"
-    # [""]="󰍽↑"
-    # [""]="󰍽↓"
+    ["mouse_up"]="󰍽↑"
+    ["mouse_down"]="󰍽↓"
 )
 
 beautify_keys() {
