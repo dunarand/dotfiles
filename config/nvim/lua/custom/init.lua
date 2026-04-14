@@ -1,3 +1,4 @@
+require("custom.chmod").setup()
 require("custom.diag-signs").setup()
 require("custom.project-dirs").setup()
 require("custom.pynb-newline").setup()
