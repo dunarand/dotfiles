@@ -3,7 +3,7 @@
   "logo": {
     "source": "~/Pictures/Cachyos-Logo.png",
     "type": "kitty",
-    "height": 32,
+    "height": 28,
     "padding": {
       "top": 1,
       "left": 1
