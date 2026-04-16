@@ -93,13 +93,13 @@
                     "hideMode": "idle",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
-                    "maxWidth": 240,
+                    "maxWidth": 145,
                     "panelShowAlbumArt": true,
                     "scrollingMode": "always",
                     "showAlbumArt": false,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "textColor": "tertiary",
                     "useFixedWidth": false,
                     "visualizerType": "linear"
@@ -108,6 +108,7 @@
             "left": [
                 {
                     "colorizeSystemIcon": "tertiary",
+                    "colorizeSystemText": "none",
                     "customIconPath": "",
                     "enableColorization": true,
                     "icon": "rocket",
@@ -118,6 +119,7 @@
                 {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "tertiary",
+                    "colorizeSystemText": "none",
                     "customIconPath": "",
                     "enableColorization": true,
                     "icon": "noctalia",
@@ -284,10 +286,11 @@
                 },
                 {
                     "colorizeSystemIcon": "none",
-                    "enableColorization": false,
+                    "colorizeSystemText": "none",
                     "generalTooltipText": "Speedtest",
                     "hideMode": "alwaysExpanded",
                     "icon": "wifi",
+                    "iconPosition": "left",
                     "id": "CustomButton",
                     "ipcIdentifier": "",
                     "leftClickExec": "hyprctl dispatch exec \"[float;center;size 960 600]\" \"ghostty -e cloudflare-speed-cli\"",
@@ -463,7 +466,7 @@
         "gridSnapScale": true,
         "monitorWidgets": [
             {
-                "name": "DP-2",
+                "name": "DP-1",
                 "widgets": [
                     {
                         "clockColor": "none",
@@ -575,7 +578,7 @@
         "radiusRatio": 0.5,
         "reverseScroll": false,
         "scaleRatio": 1,
-        "screenRadiusRatio": 0.74,
+        "screenRadiusRatio": 0.75,
         "shadowDirection": "bottom_right",
         "shadowOffsetX": 2,
         "shadowOffsetY": 3,
@@ -795,10 +798,6 @@
     },
     "templates": {
         "activeTemplates": [
-            {
-                "enabled": true,
-                "id": "btop"
-            }
         ],
         "enableUserTheming": false
     },
@@ -811,7 +810,7 @@
         "panelBackgroundOpacity": 0.6,
         "panelsAttachedToBar": true,
         "scrollbarAlwaysVisible": false,
-        "settingsPanelMode": "window",
+        "settingsPanelMode": "attached",
         "settingsPanelSideBarCardStyle": false,
         "tooltipsEnabled": true,
         "translucentWidgets": false
@@ -882,7 +881,7 @@
             "pixelate",
             "honeycomb"
         ],
-        "useOriginalImages": false,
+        "useOriginalImages": true,
         "useSolidColor": false,
         "useWallhaven": false,
         "viewMode": "browse",
