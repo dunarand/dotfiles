@@ -66,19 +66,18 @@ vimcmd_symbol = "[](bold green)"
 [username]
 style_user = "bold blue"
 style_root = "bold red"
-format = "[$user]($style) "
-show_always = false
+format = "[$user]($style)"
+show_always = true
 
 [hostname]
-ssh_only = true
-format = "on [$hostname](bold yellow) "
-disabled = false
+ssh_only = false
+format = "@[$hostname](bold teal) "
 
 [directory]
 style = "bold cyan"
 truncation_length = 3
 truncate_to_repo = true
-format = "[$path]($style)[$read_only]($read_only_style) "
+format = "in [$path]($style)[$read_only]($read_only_style) "
 read_only = " 󰌾"
 read_only_style = "red"
 
@@ -93,27 +92,18 @@ format = '([\[$all_status$ahead_behind\]]($style) )'
 conflicted = "="
 ahead = "⇡${count}"
 behind = "⇣${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+diverged = "!${ahead_count}⇣${behind_count}"
 up_to_date = ""
 untracked = "?${count}"
-stashed = "$${count}"
-modified = "!${count}"
+stashed = "≡${count}"
+modified = "~${count}"
 staged = "+${count}"
-renamed = "»${count}"
-deleted = "✘${count}"
+renamed = "/${count}"
+deleted = "-${count}"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
-
-[aws]
-symbol = " "
-
-[buf]
-symbol = " "
-
-[bun]
-symbol = " "
 
 [c]
 symbol = " "
@@ -127,65 +117,14 @@ symbol = " "
 [conda]
 symbol = " "
 
-[crystal]
-symbol = " "
-
-[dart]
-symbol = " "
-
-[deno]
-symbol = " "
-
-[docker_context]
-symbol = " "
-
-[elixir]
-symbol = " "
-
-[elm]
-symbol = " "
-
-[fennel]
-symbol = " "
-
-[fortran]
-symbol = " "
-
-[fossil_branch]
-symbol = " "
-
-[gcloud]
-symbol = " "
-
 [git_commit]
 tag_symbol = '  '
 
 [golang]
 symbol = " "
 
-[gradle]
-symbol = " "
-
-[guix_shell]
-symbol = " "
-
-[haskell]
-symbol = " "
-
-[haxe]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[java]
-symbol = " "
-
 [julia]
 symbol = " "
-
-[kotlin]
-symbol = " "
 
 [lua]
 symbol = " "
@@ -193,95 +132,18 @@ symbol = " "
 [memory_usage]
 symbol = "󰍛 "
 
-[meson]
-symbol = "󰔷 "
-
-[nim]
-symbol = "󰆥 "
-
-[nix_shell]
-symbol = " "
-
 [nodejs]
 symbol = " "
 
-[ocaml]
-symbol = " "
-
 [os.symbols]
-Alpaquita = " "
-Alpine = " "
-AlmaLinux = " "
-Amazon = " "
-Android = " "
-AOSC = " "
 Arch = " "
-Artix = " "
 CachyOS = " "
-CentOS = " "
-Debian = " "
-DragonFly = " "
-Elementary = " "
-Emscripten = " "
-EndeavourOS = " "
-Fedora = " "
-FreeBSD = " "
-Garuda = "󰛓 "
-Gentoo = " "
-HardenedBSD = "󰞌 "
-Illumos = "󰈸 "
-Ios = "󰀷 "
-Kali = " "
-Linux = " "
-Mabox = " "
-Macos = " "
-Manjaro = " "
-Mariner = " "
-MidnightBSD = " "
-Mint = " "
-NetBSD = " "
-NixOS = " "
-Nobara = " "
-OpenBSD = "󰈺 "
-openSUSE = " "
-OracleLinux = "󰌷 "
-Pop = " "
-Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-RockyLinux = " "
-Redox = "󰀘 "
-Solus = "󰠳 "
-SUSE = " "
-Ubuntu = " "
-Unknown = " "
-Void = " "
-Windows = "󰍲 "
-Zorin = " "
 
 [package]
 symbol = "󰏗 "
 
-[perl]
-symbol = " "
-
-[php]
-symbol = " "
-
-[pijul_channel]
-symbol = " "
-
-[pixi]
-symbol = "󰏗 "
-
 [python]
 symbol = " "
-
-[rlang]
-symbol = "󰟔 "
-
-[ruby]
-symbol = " "
 
 [rust]
 symbol = "󱘗 "
@@ -291,12 +153,6 @@ symbol = " "
 
 [status]
 symbol = " "
-
-[swift]
-symbol = " "
-
-[xmake]
-symbol = " "
 
 [zig]
 symbol = " "
