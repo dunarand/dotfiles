@@ -1,9 +1,9 @@
 vim.g.mapleader = " " -- leader key, set to Space
 
-vim.opt.clipboard = "unnamedplus" -- use system keyboard for yank
+vim.opt.clipboard = "unnamedplus"
 
-vim.opt.nu = true -- set line numbers
-vim.opt.relativenumber = true -- use relative line numbers
+vim.opt.nu = true
+vim.opt.relativenumber = true
 
 -- set tab size to 4 spaces
 vim.opt.tabstop = 4
@@ -12,9 +12,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
-vim.opt.incsearch = true -- incremental search
-
-vim.opt.termguicolors = true -- colors
+vim.opt.termguicolors = true
 
 -- disable backups and make undotree to have access to long undo tree, basically
 vim.opt.swapfile = false
@@ -37,3 +35,5 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+vim.opt.fillchars = { eob = " " } -- Removing ~ from empty lines
