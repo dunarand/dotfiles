@@ -16,5 +16,5 @@ if [ -n "$brave_address" ]; then
     hyprctl dispatch sendshortcut CTRL,L,address:$brave_address
 else
     # No Brave on this workspace — launch it
-    brave-browser --new-window &
+    brave --new-window &
 fi
