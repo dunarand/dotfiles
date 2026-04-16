@@ -33,12 +33,5 @@ return {
 			end,
 			desc = "Profiler Scratch Buffer",
 		},
-		{
-			"<leader>od",
-			function()
-				Snacks.dashboard.open()
-			end,
-			desc = "Open Snacks Dashboard",
-		},
 	},
 }
