@@ -1,7 +1,10 @@
 return {
 	"nvim-telescope/telescope.nvim",
 	tag = "v0.1.9",
-	dependencies = { "nvim-lua/plenary.nvim" },
+	dependencies = {
+	    "nvim-lua/plenary.nvim",
+	    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+	},
 	config = function()
 		local telescope = require("telescope")
 		local builtin = require("telescope.builtin")
@@ -29,18 +32,24 @@ return {
 					"dist/",
 					"build/",
 					"*.lock",
+                    "__pycache__",
+                    ".idea/",
 				},
 			},
 			pickers = {
 				find_files = {
 					hidden = true,
-					previewer = false,
+					previewer = true,
+                    follow = true,
 					find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" },
 				},
+                live_grep = {
+                    additional_args = { "--follow" }
+                },
 				buffers = {
 					show_all_buffers = true,
 					sort_lastused = true,
-					previewer = false,
+					previewer = true,
 					mappings = {
 						i = {
 							["<C-d>"] = actions.delete_buffer,
