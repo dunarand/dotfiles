@@ -5,7 +5,6 @@
 is_floating=$(hyprctl activewindow -j | jq -r '.floating')
 
 if [ "$is_floating" != "true" ]; then
-    echo "Window is not floating"
     exit 1
 fi
 
@@ -27,6 +26,3 @@ elif [ $percentage -le 70 ]; then
 else
     hyprctl dispatch resizeactive exact 40% 40%
 fi
-
-# Center the window after resizing
-hyprctl dispatch centerwindow
