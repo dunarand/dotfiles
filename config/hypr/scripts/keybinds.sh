@@ -1,9 +1,45 @@
 #!/bin/bash
-
 HYPR_CONF="$HOME/.config/hypr/keybinds.conf"
+HYPR_MAIN="$HOME/.config/hypr/hyprland.conf"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hypr"
+CACHE_FILE="$CACHE_DIR/keybinds.cache"
+CACHE_MTIME="$CACHE_DIR/keybinds.mtime"
 
-# --- GLYPHS --------------------------------------------------
+# --- CACHE HELPERS ---------------------------------------------
+get_mtime() {
+    stat -c '%Y' "$1" 2>/dev/null || echo 0
+}
 
+cache_is_valid() {
+    [[ -f $CACHE_FILE && -f $CACHE_MTIME ]] || return 1
+    local stored
+    stored=$(cat "$CACHE_MTIME")
+    local current
+    current="$(get_mtime "$HYPR_CONF"):$(get_mtime "$HYPR_MAIN")"
+    [[ $stored == "$current" ]]
+}
+
+write_cache() {
+    mkdir -p "$CACHE_DIR"
+    # Write entries as: BINDING<TAB>CMD|ARGS
+    local i
+    for i in "${!BINDINGS[@]}"; do
+        printf '%s\t%s\n' "${BINDINGS[$i]}" "${COMMANDS[$i]}"
+    done > "$CACHE_FILE"
+    # Write mtime stamp
+    echo "$(get_mtime "$HYPR_CONF"):$(get_mtime "$HYPR_MAIN")" > "$CACHE_MTIME"
+}
+
+load_cache() {
+    BINDINGS=()
+    COMMANDS=()
+    while IFS=$'\t' read -r binding command; do
+        BINDINGS+=("$binding")
+        COMMANDS+=("$command")
+    done < "$CACHE_FILE"
+}
+
+# --- GLYPHS ----------------------------------------------------
 declare -A KEY_GLYPHS=(
     ["SUPER"]=""
     ["CTRL"]="󰘴"
@@ -43,7 +79,6 @@ declare -A KEY_GLYPHS=(
 beautify_keys() {
     local input="${1/\$mod/SUPER}"
     local out=""
-
     for token in $input; do
         if [[ -n ${KEY_GLYPHS[$token]} ]]; then
             out+="${KEY_GLYPHS[$token]} "
@@ -51,7 +86,6 @@ beautify_keys() {
             out+="$token "
         fi
     done
-
     echo "${out% }"
 }
 
@@ -62,27 +96,20 @@ trim() {
     echo "$var"
 }
 
-# --- LOAD $VARS --------------------------------------------------
-
+# --- LOAD $VARS ------------------------------------------------
 declare -A HYPR_VARS
 
-# Load from *this* file
 while IFS= read -r line; do
     if [[ $line =~ ^\$([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*=[[:space:]]*(.+)$ ]]; then
-        var_name="${BASH_REMATCH[1]}"
-        var_value=$(trim "${BASH_REMATCH[2]%%#*}")
-        HYPR_VARS[$var_name]="$var_value"
+        HYPR_VARS[${BASH_REMATCH[1]}]=$(trim "${BASH_REMATCH[2]%%#*}")
     fi
 done < "$HYPR_CONF"
 
-# ALSO load from hyprland.conf (your program vars)
 while IFS= read -r line; do
     if [[ $line =~ ^\$([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*=[[:space:]]*(.+)$ ]]; then
-        var_name="${BASH_REMATCH[1]}"
-        var_value=$(trim "${BASH_REMATCH[2]%%#*}")
-        HYPR_VARS[$var_name]="$var_value"
+        HYPR_VARS[${BASH_REMATCH[1]}]=$(trim "${BASH_REMATCH[2]%%#*}")
     fi
-done < "$HOME/.config/hypr/hyprland.conf"
+done < "$HYPR_MAIN"
 
 expand_vars() {
     local str="$1"
@@ -92,54 +119,44 @@ expand_vars() {
     echo "$str"
 }
 
-# --- PARSE BINDINGS --------------------------------------------
-
+# --- BINDINGS (parse or load cache) ----------------------------
 BINDINGS=()
 COMMANDS=()
 
-while IFS= read -r raw; do
-    [[ $raw =~ ^bindd ]] || [[ $raw =~ ^binddl ]] || continue
+if cache_is_valid; then
+    load_cache
+else
+    while IFS= read -r raw; do
+        [[ $raw =~ ^bindd ]] || [[ $raw =~ ^binddl ]] || continue
+        line="${raw%%#*}"
+        line="${line#*=}"
+        IFS=',' read -ra fields <<< "$line"
+        for i in "${!fields[@]}"; do
+            fields[$i]=$(trim "${fields[$i]}")
+        done
+        [[ ${#fields[@]} -ge 4 ]] || continue
 
-    # remove inline comments
-    line="${raw%%#*}"
+        mod="${fields[0]}"
+        key="${fields[1]}"
+        desc="${fields[2]}"
+        cmd="${fields[3]}"
+        args="${fields[*]:4}"
 
-    # cut before '='
-    line="${line#*=}"
+        [[ -z $desc ]] && desc="No description"
 
-    # split *all* comma fields into an array
-    IFS=',' read -ra fields <<< "$line"
-    for i in "${!fields[@]}"; do
-        fields[$i]=$(trim "${fields[$i]}")
-    done
+        mod_b=$(beautify_keys "$mod")
+        key_b=$(beautify_keys "$key")
+        cmd_expanded=$(expand_vars "$cmd")
+        args_expanded=$(expand_vars "$args")
 
-    # must have at least 4 fields
-    [[ ${#fields[@]} -ge 4 ]] || continue
+        BINDINGS+=("${mod_b} + ${key_b}  ${desc}")
+        COMMANDS+=("$cmd_expanded|$args_expanded")
+    done < "$HYPR_CONF"
 
-    mod="${fields[0]}"
-    key="${fields[1]}"
-    desc="${fields[2]}"
-    cmd="${fields[3]}"
-
-    # args = EVERYTHING after field 3
-    args="${fields[*]:4}"
-
-    [[ -z $desc ]] && desc="No description"
-
-    # pretty keys
-    mod_b=$(beautify_keys "$mod")
-    key_b=$(beautify_keys "$key")
-
-    # expand vars
-    cmd_expanded=$(expand_vars "$cmd")
-    args_expanded=$(expand_vars "$args")
-
-    BINDINGS+=("${mod_b} + ${key_b}  ${desc}")
-    COMMANDS+=("$cmd_expanded|$args_expanded")
-
-done < "$HYPR_CONF"
+    write_cache
+fi
 
 # --- SELECT ----------------------------------------------------
-
 CHOICE=$(printf "%s\n" "${BINDINGS[@]}" | rofi -dmenu -i -p "Keybinds")
 [[ -z $CHOICE ]] && exit 0
 
@@ -147,20 +164,15 @@ INDEX=-1
 for i in "${!BINDINGS[@]}"; do
     [[ ${BINDINGS[$i]} == "$CHOICE" ]] && INDEX=$i && break
 done
-
 [[ $INDEX -eq -1 ]] && exit 1
 
 # --- EXECUTE ---------------------------------------------------
-
 CMD_RAW="${COMMANDS[$INDEX]}"
-
 cmd="${CMD_RAW%%|*}"
 args="${CMD_RAW#*|}"
-
 cmd=$(trim "$cmd")
 args=$(trim "$args")
 
-# Hyprland exec MUST be run via hyprctl
 if [[ $cmd == "exec" ]]; then
     hyprctl dispatch exec "$args"
 else
