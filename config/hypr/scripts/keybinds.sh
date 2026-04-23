@@ -50,6 +50,7 @@ declare -A KEY_GLYPHS=(
     ["BACKSPACE"]="⌫"
     ["DELETE"]="⌦"
     ["TAB"]="󰌒"
+    ["GRAVE"]="~"
     ["ENTER"]="󰌑"
     ["LEFT"]="←"
     ["RIGHT"]="→"
