@@ -1,0 +1,47 @@
+- defaults:
+    link:
+      relink: true
+      force: true
+      backup: true
+      create: true
+
+- clean: ["~", "~/.config"]
+
+- link:
+    # --- Config Directory (~/.config/) ---
+    ~/.config/bat: config/bat
+    ~/.config/bottom: config/bottom
+    ~/.config/brave-flags.conf: config/brave-flags.conf
+    ~/.config/chrome-flags.conf: config/chrome-flags.conf
+    ~/.config/easyeffects: config/easyeffects
+    ~/.config/fastfetch: config/fastfetch
+    ~/.config/fish: config/fish
+    ~/.config/ghostty: config/ghostty
+    ~/.config/hypr: config/hypr
+    ~/.config/kdeglobals: config/kdeglobals
+    ~/.config/lazygit: config/lazygit
+    ~/.config/marktext: config/marktext
+    ~/.config/mimeapps.list: config/mimeapps.list
+    ~/.config/noctalia: config/noctalia
+    ~/.config/nvim: config/nvim
+    ~/.config/quickshell: config/quickshell
+    ~/.config/rofi: config/rofi
+    ~/.config/starship.toml: config/starship.toml
+    ~/.config/wezterm: config/wezterm
+    ~/.config/wlogout: config/wlogout
+    ~/.config/xdg-desktop-portal: config/xdg-desktop-portal
+
+    # --- Home Directory (~/) ---
+    ~/dxvk.conf: home/dxvk.conf
+    ~/.tmux.conf: home/.tmux.conf
+
+    # --- Local Directory (~/.local/) ---
+    ~/.local/bin: local/bin
+    ~/.local/share/actions-for-nautilus: local/share/actions-for-nautilus
+
+- shell:
+    - description: Installing system and environment packages
+      command: bash packages/install-packages.sh
+      stdin: true
+      stdout: true
+      stderr: true
