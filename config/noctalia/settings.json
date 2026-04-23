@@ -574,7 +574,8 @@
         "iRadiusRatio": 1,
         "keybinds": {
             "keyDown": [
-                "Ctrl+J"
+                "Down",
+                "Ctrl+N"
             ],
             "keyEnter": [
                 "Return",
@@ -584,16 +585,17 @@
                 "Esc"
             ],
             "keyLeft": [
-                "Ctrl+H"
+                "Left"
             ],
             "keyRemove": [
                 "Del"
             ],
             "keyRight": [
-                "Ctrl+L"
+                "Right"
             ],
             "keyUp": [
-                "Ctrl+K"
+                "Up",
+                "Ctrl+P"
             ]
         },
         "language": "",
