@@ -1,0 +1,16 @@
+{
+  "apps": {
+    "Brave-browser": "brave",
+    "Code": "code",
+    "Tad": "tad",
+    "com.mitchellh.ghostty": "ghostty",
+    "org.gnome.Nautilus": "nautilus",
+    "jetbrains-pycharm-ce": "pycharm"
+  },
+  "ignore": [
+    { "wm_class": "spotify" },
+    { "wm_class": "com.mitchellh.ghostty", "title": "btm-monitor" },
+    { "wm_class": "steam" },
+    { "wm_class": "discord" }
+  ]
+}
