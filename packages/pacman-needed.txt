@@ -1,0 +1,14 @@
+base-devel
+cargo
+cmake
+git
+go
+lua
+lua51
+luarocks
+make
+nodejs
+python
+python-pip
+python-pipx
+rustup

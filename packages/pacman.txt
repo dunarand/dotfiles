@@ -1,32 +1,20 @@
-# INSTALL IN ORDER
-base-devel
-git
-python
-python-pip
-python-pipx
-rustup
-nodejs
-
-# ALPHABETICAL
 adw-gtk-theme
 alsa-lib
 archlinux-xdg-menu
 baobab
 base-devel
 bat
-betterdiscord-installer
 biber
 blueman
 bluez
 bluez-utils
 bottom
+brave-bin
 brightnessctl
 btop
 calf
-cargo
 cliphist
 cloudflare-speed-cli
-cmake
 curl
 desktop-file-utils
 dialect
@@ -49,7 +37,6 @@ gnome-font-viewer
 gnome-keyring
 gnome-music
 gnome-system-monitor
-go
 grim
 gvfs
 htop
@@ -57,7 +44,6 @@ hypridle
 hyprpicker
 imagemagick
 iniparser
-kdeconnect
 lazygit
 libgtop
 libnotify
@@ -65,10 +51,6 @@ libreoffice-fresh
 libsecret
 loupe
 lsp-plugins-lv2
-lua
-lua51
-luarocks
-make
 mda.lv2
 mousai
 mpv

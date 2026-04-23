@@ -2,6 +2,7 @@
 python-pynvim
 
 # ALPHABETICAL
+betterdiscord-installer
 bluez
 bluez-utils
 brightnessctl
@@ -13,7 +14,6 @@ google-chrome
 grimblast
 gtksourceview3
 gvfs
-hyprdrover
 hyprpicker
 jupyter-nbformat
 jupyter-notebook
@@ -30,6 +30,7 @@ python
 python-ipykernel
 python-jupyter-client
 python-pillow
+quickshell-overview-git
 rustdesk-bin
 spicetify-cli
 spotify
@@ -41,5 +42,3 @@ valuta
 visual-studio-code-bin
 wireplumber
 wl-clipboard
-
-quickshell-overview-git

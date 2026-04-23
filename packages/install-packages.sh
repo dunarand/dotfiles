@@ -1,186 +1,87 @@
 #!/bin/bash
-
 set -e
 
-ARCH_DISTROS=("arch" "manjaro" "cachyos")
-DEBIAN_DISTROS=("debian" "ubuntu" "pop" "linuxmint")
-FEDORA_DISTROS=("fedora")
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES_DIR="$SCRIPT_DIR"
 
-detect_os() {
-    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ -n "$WINDIR" ]]; then
-        echo "windows"
-    elif [ -f /etc/os-release ]; then
-        . /etc/os-release
-        echo "$ID"
-    elif [ -f /etc/arch-release ]; then
-        echo "arch"
-    elif [ -f /etc/debian_version ]; then
-        echo "debian"
-    else
-        echo "unknown"
-    fi
+confirm() {
+    local name="$1"
+    read -rp "Proceed with $name? [Y/n] " ans
+    [[ "$ans" =~ ^[Nn]$ ]] && return 1 || return 0
 }
 
-in_array() {
-    local needle=$1
-    shift
-    local array=("$@")
-    for item in "${array[@]}"; do
-        if [[ "$item" == "$needle" ]]; then
-            return 0
-        fi
+read_packages() {
+    grep -vE '^\s*(#|$)' "$1"
+}
+
+echo "=== PACMAN INSTALL ==="
+
+# 1. pacman-needed.txt
+FILE="$SCRIPT_DIR/pacman-needed.txt"
+if [[ -f "$FILE" ]] && confirm "pacman-needed.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    if (( ${#pkgs[@]} )); then
+        sudo pacman -S --needed --noconfirm "${pkgs[@]}"
+    fi
+fi
+
+# 2. pacman.txt
+FILE="$SCRIPT_DIR/pacman.txt"
+if [[ -f "$FILE" ]] && confirm "pacman.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    if (( ${#pkgs[@]} )); then
+        sudo pacman -S "${pkgs[@]}"
+    fi
+fi
+
+echo "=== AUR INSTALL ==="
+
+# 3. aur.txt (yay)
+FILE="$SCRIPT_DIR/aur.txt"
+if command -v yay &>/dev/null && [[ -f "$FILE" ]] && confirm "aur.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    if (( ${#pkgs[@]} )); then
+        yay -S --needed "${pkgs[@]}"
+    fi
+else
+    [[ ! -x "$(command -v yay)" ]] && echo "[skip] yay not installed"
+fi
+
+echo "=== OTHER SOURCES ==="
+
+# npm
+FILE="$SCRIPT_DIR/npm.txt"
+if command -v npm &>/dev/null && [[ -f "$FILE" ]] && confirm "npm.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    for p in "${pkgs[@]}"; do
+        sudo npm install -g "$p"
     done
-    return 1
-}
-
-install_from_file() {
-    local file=$1
-    local installer=$2
-
-    if [ ! -f "$file" ]; then
-        echo -e "${YELLOW}File $file not found, skipping...${NC}"
-        return
-    fi
-
-    echo -e "${BLUE}Installing packages from $(basename "$file")...${NC}"
-
-    packages=$(grep -v '^#' "$file" | grep -v '^$' | tr '\n' ' ')
-
-    if [ -z "$packages" ]; then
-        echo -e "${YELLOW}No packages found in $file${NC}"
-        return
-    fi
-
-    echo -e "${GREEN}Packages to install: $packages${NC}"
-    eval "$installer $packages"
-}
-
-OS=$(detect_os)
-echo -e "${GREEN}Detected OS: $OS${NC}\n"
-
-if in_array "$OS" "${ARCH_DISTROS[@]}"; then
-    echo -e "${BLUE}=== Installing Arch Linux packages ===${NC}"
-
-    echo -e "${YELLOW}Updating system...${NC}"
-    sudo pacman -Syu --noconfirm
-
-    if [ -f "$PACKAGES_DIR/$OS.txt" ]; then
-        install_from_file "$PACKAGES_DIR/$OS.txt" "sudo pacman -S --needed"
-    elif [ -f "$PACKAGES_DIR/arch.txt" ]; then
-        install_from_file "$PACKAGES_DIR/arch.txt" "sudo pacman -S --needed"
-    fi
-
-    if command -v yay &> /dev/null; then
-        if [ -f "$PACKAGES_DIR/aur.txt" ]; then
-            echo -e "${BLUE}Installing AUR packages...${NC}"
-            install_from_file "$PACKAGES_DIR/aur.txt" "yay -S --needed"
-        fi
-    else
-        echo -e "${YELLOW}No AUR helper found (yay). Skipping AUR packages.${NC}"
-        echo -e "${YELLOW}Install yay with: git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si${NC}"
-    fi
-
-elif in_array "$OS" "${DEBIAN_DISTROS[@]}"; then
-    echo -e "${BLUE}=== Installing Debian/Ubuntu packages ===${NC}"
-
-    echo -e "${YELLOW}Updating package list...${NC}"
-    sudo apt update
-
-    if [ -f "$PACKAGES_DIR/$OS.txt" ]; then
-        install_from_file "$PACKAGES_DIR/$OS.txt" "sudo apt install -y"
-    elif [ -f "$PACKAGES_DIR/debian.txt" ]; then
-        install_from_file "$PACKAGES_DIR/debian.txt" "sudo apt install -y"
-    fi
-
-    echo -e "${YELLOW}Upgrading system...${NC}"
-    sudo apt upgrade -y
-
-elif in_array "$OS" "${FEDORA_DISTROS[@]}"; then
-    echo -e "${BLUE}=== Installing Fedora/RHEL packages ===${NC}"
-
-    echo -e "${YELLOW}Updating system...${NC}"
-    sudo dnf update -y
-
-    if [ -f "$PACKAGES_DIR/$OS.txt" ]; then
-        install_from_file "$PACKAGES_DIR/$OS.txt" "sudo dnf install -y"
-    elif [ -f "$PACKAGES_DIR/fedora.txt" ]; then
-        install_from_file "$PACKAGES_DIR/fedora.txt" "sudo dnf install -y"
-    fi
-
-elif [ "$OS" = "windows" ]; then
-    echo -e "${BLUE}=== Windows detected ===${NC}"
-    echo -e "${YELLOW}Please use install-packages.bat for Windows${NC}"
-    exit 0
-
-else
-    echo -e "${RED}Unsupported OS: $OS${NC}"
-    echo -e "${YELLOW}You can manually install packages from the appropriate file in $PACKAGES_DIR${NC}"
-    exit 1
 fi
 
-if command -v flatpak &> /dev/null; then
-    if [ -f "$PACKAGES_DIR/flatpak.txt" ]; then
-        echo -e "\n${BLUE}=== Installing Flatpak packages ===${NC}"
-        while IFS= read -r package; do
-            [[ "$package" =~ ^#.*$ ]] && continue
-            [[ -z "$package" ]] && continue
-
-            echo -e "${GREEN}Installing flatpak: $package${NC}"
-            flatpak install -y flathub "$package"
-        done < "$PACKAGES_DIR/flatpak.txt"
-    fi
-else
-    echo -e "\n${YELLOW}Flatpak not installed. Skipping flatpak packages.${NC}"
+# pip via uv
+FILE="$SCRIPT_DIR/pip.txt"
+if command -v uv &>/dev/null && [[ -f "$FILE" ]] && confirm "pip.txt (uv)"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    for p in "${pkgs[@]}"; do
+        uv tool install "$p"
+    done
 fi
 
-if command -v npm &> /dev/null; then
-    if [ -f "$PACKAGES_DIR/npm.txt" ]; then
-        echo -e "\n${BLUE}=== Installing NPM global packages ===${NC}"
-        install_from_file "$PACKAGES_DIR/npm.txt" "sudo npm install -g"
-    fi
-else
-    echo -e "\n${YELLOW}NPM not installed. Skipping npm packages.${NC}"
+# go
+FILE="$SCRIPT_DIR/go.txt"
+if command -v go &>/dev/null && [[ -f "$FILE" ]] && confirm "go.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    for p in "${pkgs[@]}"; do
+        go install "$p"
+    done
 fi
 
-if command -v pipx &> /dev/null; then
-    if [ -f "$PACKAGES_DIR/pipx.txt" ]; then
-        echo -e "\n${BLUE}=== Installing pipx packages ===${NC}"
-        while IFS= read -r package; do
-            [[ "$package" =~ ^#.*$ ]] && continue
-            [[ -z "$package" ]] && continue
-
-            echo -e "${GREEN}Installing pipx package: $package${NC}"
-            pipx install "$package"
-        done < "$PACKAGES_DIR/pipx.txt"
-    fi
-else
-    echo -e "\n${YELLOW}pipx not installed. Skipping pipx packages.${NC}"
+# cargo
+FILE="$SCRIPT_DIR/cargo.txt"
+if command -v cargo &>/dev/null && [[ -f "$FILE" ]] && confirm "cargo.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    for p in "${pkgs[@]}"; do
+        cargo install "$p"
+    done
 fi
 
-if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
-    if [ -f "$PACKAGES_DIR/pip.txt" ]; then
-        echo -e "\n${BLUE}=== Installing Python packages ===${NC}"
-        PIP_CMD=$(command -v pip3 &> /dev/null && echo "pip3" || echo "pip")
-
-        while IFS= read -r package; do
-            [[ "$package" =~ ^#.*$ ]] && continue
-            [[ -z "$package" ]] && continue
-
-            echo -e "${GREEN}Installing Python package: $package${NC}"
-            $PIP_CMD install --user "$package"
-        done < "$PACKAGES_DIR/pip.txt"
-    fi
-else
-    echo -e "\n${YELLOW}Pip not installed. Skipping Python packages.${NC}"
-fi
-
-echo -e "\n${GREEN}✓ Package installation complete!${NC}"
+echo "=== DONE ==="
