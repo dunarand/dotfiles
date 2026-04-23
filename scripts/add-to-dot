@@ -18,42 +18,92 @@ get_repo_path() {
     fi
 }
 
-if [[ $# -eq 0 ]]; then
-    echo "Usage: $(basename "$0") <file|dir> [...]"
-    exit 1
-fi
+process_target() {
+    local target="$1"
 
-for target in "$@"; do
-    # Resolve absolute path, handling trailing slashes
     target="${target%/}"
-    abs="$(realpath "$target" 2>/dev/null)"
+    abs="$(realpath "$target" 2> /dev/null)"
 
     if [[ ! -e "$abs" ]]; then
         echo "Error: '$target' does not exist, skipping."
-        continue
+        return
     fi
 
     if [[ -L "$abs" ]]; then
         echo "Warning: '$target' is already a symlink, skipping."
-        continue
+        return
     fi
 
-    repo_path="$(get_repo_path "$abs")" || continue
+    repo_path="$(get_repo_path "$abs")" || return
 
     if [[ -e "$repo_path" ]]; then
         echo "Error: '$repo_path' already exists in the repo, skipping."
-        continue
+        return
     fi
 
-    # Create parent dirs in repo if needed
     mkdir -p "$(dirname "$repo_path")"
 
-    # Move to repo
     mv "$abs" "$repo_path"
     echo "Moved:    $abs → $repo_path"
 
-    # Symlink back to original location
     ln -s "$repo_path" "$abs"
     echo "Linked:   $abs → $repo_path"
     echo
+}
+
+usage() {
+    echo "Usage:"
+    echo "  $0 file1 [file2 ...]"
+    echo "  $0 -d <directory> -f <file1 file2 ...>"
+    exit 1
+}
+
+# --- Parse arguments ---
+dir_mode=""
+base_dir=""
+files=()
+targets=()
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -d | --dir)
+            dir_mode=1
+            base_dir="$2"
+            shift 2
+            ;;
+        -f | --files)
+            shift
+            while [[ $# -gt 0 && "$1" != -* ]]; do
+                files+=("$1")
+                shift
+            done
+            ;;
+        -*)
+            echo "Unknown flag: $1"
+            usage
+            ;;
+        *)
+            targets+=("$1")
+            shift
+            ;;
+    esac
 done
+
+# --- Dispatch behavior ---
+if [[ -n "$dir_mode" ]]; then
+    if [[ -z "$base_dir" || ${#files[@]} -eq 0 ]]; then
+        usage
+    fi
+
+    for file in "${files[@]}"; do
+        process_target "$base_dir/$file"
+    done
+
+elif [[ ${#targets[@]} -gt 0 ]]; then
+    for t in "${targets[@]}"; do
+        process_target "$t"
+    done
+
+else
+    usage
+fi
