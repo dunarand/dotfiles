@@ -1,0 +1,51 @@
+{
+  "actions": [
+    {
+      "type": "menu",
+      "label": "Copy details",
+      "actions": [
+        {
+          "label": "Copy name",
+          "type": "command",
+          "command_line": "echo -n %B | wl-copy",
+          "use_shell": true,
+          "use_v1_interpolation": false
+        },
+        {
+          "label": "Copy path",
+          "type": "command",
+          "command_line": "echo -n %F | wl-copy",
+          "use_shell": true,
+          "use_v1_interpolation": false
+        },
+        {
+          "label": "Copy URI",
+          "type": "command",
+          "command_line": "echo -n %U | wl-copy",
+          "use_shell": true,
+          "use_v1_interpolation": false
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "label": "Send",
+      "actions": [
+        {
+          "type": "command",
+          "label": "LocalSend",
+          "command_line": "localsend %f",
+          "use_v1_interpolation": false
+        }
+      ]
+    },
+    {
+      "type": "command",
+      "label": "Open in nvim",
+      "command_line": "hyprctl dispatch exec \"[float;size 960 600;center]\" \"ghostty --working-directory=%f -e nvim\"",
+      "use_v1_interpolation": false
+    }
+  ],
+  "sort": "manual",
+  "debug": false
+}
