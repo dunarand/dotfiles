@@ -5,17 +5,27 @@
       backup: true
       create: true
 
-- clean: ["~", "~/.config"]
+- clean:
+    '~':
+      force: true
+    '~/.config':
+      recursive: true
+    '~/.local/bin':
+      force: true
 
 - link:
-    # --- Config Directory (~/.config/) ---
+    # --- Config Directory ---
     ~/.config/bat: config/bat
     ~/.config/bottom: config/bottom
     ~/.config/brave-flags.conf: config/brave-flags.conf
     ~/.config/chrome-flags.conf: config/chrome-flags.conf
-    ~/.config/easyeffects: config/easyeffects
+    ~/.config/easyeffects/:
+      glob: true
+      path: config/easyeffects/*
     ~/.config/fastfetch: config/fastfetch
-    ~/.config/fish: config/fish
+    ~/.config/fish/:
+      glob: true
+      path: config/fish/*
     ~/.config/ghostty: config/ghostty
     ~/.config/hypr: config/hypr
     ~/.config/kdeglobals: config/kdeglobals
@@ -31,17 +41,16 @@
     ~/.config/wlogout: config/wlogout
     ~/.config/xdg-desktop-portal: config/xdg-desktop-portal
 
-    # --- Home Directory (~/) ---
+    # --- Home Directory ---
     ~/dxvk.conf: home/dxvk.conf
     ~/.tmux.conf: home/.tmux.conf
 
-    # --- Local Directory (~/.local/) ---
-    ~/.local/bin: local/bin
+    # --- Globbing local/bin ---
+    ~/.local/bin/:
+      glob: true
+      path: local/bin/*
+
     ~/.local/share/actions-for-nautilus: local/share/actions-for-nautilus
 
 - shell:
-    - description: Installing system and environment packages
-      command: bash packages/install-packages.sh
-      stdin: true
-      stdout: true
-      stderr: true
+    - [bash packages/install-packages.sh, Installing system packages]
