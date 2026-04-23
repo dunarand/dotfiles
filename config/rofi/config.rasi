@@ -9,53 +9,53 @@ configuration {
     normalize-match: true;
     scroll-method: 1;
 	window-format: "{w} {c} {t}";
-  timeout {
-      action: "kb-cancel";
-      delay:  0;
-  }
-  filebrowser {
-      directories-first: true;
-      sorting-method:    "name";
-  }
+    timeout {
+        action: "kb-cancel";
+        delay:  0;
+    }
+    filebrowser {
+        directories-first: true;
+        sorting-method:    "name";
+    }
 }
 
 @import "catppuccin-mocha"
 
 * {
-    selected-active-foreground:  @background;
-    lightfg:                     @text;
-    separatorcolor:              @foreground;
+    selected-active-foreground:  @crust;
+    lightfg:                     @lavender;
+    separatorcolor:              @surface1;
     urgent-foreground:           @red;
-    alternate-urgent-background: @lightbg;
-    lightbg:                     @mantle;
+    alternate-urgent-background: @surface0;
+    lightbg:                     @surface0;
     background-color:            transparent;
-    border-color:                @foreground;
-    normal-background:           @background;
-    selected-urgent-background:  @red;
-    alternate-active-background: @lightbg;
+    border-color:                @mauve;
+    normal-background:           @base;
+    selected-urgent-background:  @maroon;
+    alternate-active-background: @surface0;
     spacing:                     2;
-    alternate-normal-foreground: @foreground;
-    urgent-background:           @background;
-    selected-normal-foreground:  @lightbg;
-    active-foreground:           @blue;
+    alternate-normal-foreground: @subtext0;
+    urgent-background:           @base;
+    selected-normal-foreground:  @crust;
+    active-foreground:           @sky;
     background:                  @base;
-    selected-active-background:  @blue;
-    active-background:           @background;
-    selected-normal-background:  @lightfg;
-    alternate-normal-background: @lightbg;
+    selected-active-background:  @teal;
+    active-background:           @base;
+    selected-normal-background:  @mauve;
+    alternate-normal-background: @mantle;
     foreground:                  @text;
-    selected-urgent-foreground:  @background;
-    normal-foreground:           @foreground;
+    selected-urgent-foreground:  @crust;
+    normal-foreground:           @text;
     alternate-urgent-foreground: @red;
-    alternate-active-foreground: @blue;
-
+    alternate-active-foreground: @sky;
 }
+
 element {
-    padding:       4px ;
+    padding:       6px 8px;
     cursor:        pointer;
-    spacing:       4px ;
+    spacing:       6px;
     border:        0;
-    border-radius: 8;
+    border-radius: 10;
 }
 element normal.normal {
     background-color: @normal-background;
@@ -82,115 +82,119 @@ element selected.active {
     text-color:       @selected-active-foreground;
 }
 element alternate.normal {
-    background-color: @normal-background;
-    text-color:       @normal-foreground;
+    background-color: @alternate-normal-background;
+    text-color:       @alternate-normal-foreground;
 }
 element alternate.urgent {
     background-color: @urgent-background;
     text-color:       @urgent-foreground;
 }
 element alternate.active {
-    background-color: @active-background;
-    text-color:       @active-foreground;
+    background-color: @alternate-active-background;
+    text-color:       @alternate-active-foreground;
 }
 element-text {
     background-color: transparent;
     cursor:           inherit;
-    highlight:        inherit;
+    highlight:        @yellow;
     text-color:       inherit;
 }
 element-icon {
     background-color: transparent;
-    size:             1.0000em ;
+    size:             1.2000em;
     cursor:           inherit;
     text-color:       inherit;
 }
 window {
-    padding:          8;
-    background-color: @background;
-    border:           1;
-    border-radius:    12;
-    width:            25%;
+    padding:          10;
+    background-color: @base;
+    border:           2;
+    border-radius:    14;
+    border-color:     @mauve;
+    width:            28%;
 }
 mainbox {
-    padding: 6;
+    padding: 8;
     border:  0;
 }
 message {
-    padding:      1px ;
-    border-color: @separatorcolor;
-    border:       2px dash 0px 0px ;
+    padding:      4px 8px;
+    border-color: @surface1;
+    border:       0px 0px 1px 0px;
 }
 textbox {
-    text-color: @foreground;
+    text-color: @yellow;
 }
 listview {
-    padding:      6px 4px;
+    padding:      8px 4px;
     scrollbar:    true;
-    border-color: @separatorcolor;
-    spacing:      4px ;
+    border-color: @surface1;
+    spacing:      2px;
     fixed-height: 0;
     lines:        12;
     border:       0;
 }
 scrollbar {
-    width:        4px ;
+    width:        4px;
     padding:      0;
-    handle-width: 8px ;
+    handle-width: 8px;
     border:       0;
-    handle-color: @normal-foreground;
+    handle-color: @mauve;
 }
 sidebar {
-    border-color: @separatorcolor;
-    border:       2px dash 0px 0px ;
+    border-color: @surface1;
+    border:       1px 0px 0px 0px;
 }
 button {
     cursor:     pointer;
     spacing:    0;
-    text-color: @normal-foreground;
+    text-color: @subtext1;
 }
 button selected {
-    background-color: @selected-normal-background;
-    text-color:       @selected-normal-foreground;
+    background-color: @mauve;
+    text-color:       @crust;
 }
 num-filtered-rows {
     expand:     false;
-    text-color: Gray;
+    text-color: @overlay0;
 }
 num-rows {
     expand:     false;
-    text-color: Gray;
+    text-color: @overlay0;
 }
 textbox-num-sep {
     expand:     false;
     str:        "/";
-    text-color: Gray;
+    text-color: @overlay0;
 }
 inputbar {
-    padding:       4px ;
-    spacing:       3px ;
-    text-color:    @normal-foreground;
-    border-radius: 8;
-    children:   [ "prompt","textbox-prompt-colon","entry","num-filtered-rows","textbox-num-sep","num-rows","case-indicator" ];
+    padding:          6px 8px;
+    spacing:          4px;
+    text-color:       @text;
+    border-radius:    10;
+    background-color: @mantle;
+    border:           1;
+    border-color:     @surface2;
+    children:         [ "prompt","textbox-prompt-colon","entry","num-filtered-rows","textbox-num-sep","num-rows","case-indicator" ];
 }
 case-indicator {
     spacing:    0;
-    text-color: @normal-foreground;
+    text-color: @overlay1;
 }
 entry {
-    text-color:        @normal-foreground;
+    text-color:        @text;
     cursor:            text;
     spacing:           0;
-    placeholder-color: Gray;
-    placeholder:       "Type to filter";
+    placeholder-color: @overlay1;
+    placeholder:       "Search…";
 }
 prompt {
     spacing:    0;
-    text-color: @normal-foreground;
+    text-color: @mauve;
 }
 textbox-prompt-colon {
-    margin:     0px 0.3000em 0.0000em 0.0000em ;
+    margin:     0px 0.3000em 0.0000em 0.0000em;
     expand:     false;
-    str:        ":";
-    text-color: inherit;
+    str:        "";
+    text-color: @mauve;
 }
