@@ -7,3 +7,18 @@ lazy-lock.json
 
 *.swp
 *.backup
+
+config/fish/*
+!config/fish/themes/catppuccin-mocha.theme
+!config/fish/config.fish
+
+config/easyeffects/*
+!config/easyeffects/scripts/*
+
+config/marktext/*
+!config/marktext/preferences.json
+
+config/noctalia/*
+!config/noctalia/colors.json
+!config/noctalia/plugins.json
+!config/noctalia/settings.json

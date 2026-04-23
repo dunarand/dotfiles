@@ -19,13 +19,9 @@
     ~/.config/bottom: config/bottom
     ~/.config/brave-flags.conf: config/brave-flags.conf
     ~/.config/chrome-flags.conf: config/chrome-flags.conf
-    ~/.config/easyeffects/:
-      glob: true
-      path: config/easyeffects/*
+    ~/.config/easyeffects: config/easyeffects
     ~/.config/fastfetch: config/fastfetch
-    ~/.config/fish/:
-      glob: true
-      path: config/fish/*
+    ~/.config/fish: config/fish
     ~/.config/ghostty: config/ghostty
     ~/.config/hypr: config/hypr
     ~/.config/kdeglobals: config/kdeglobals
