@@ -4,12 +4,13 @@ DOTFILES_DIR="$HOME/dotfiles"
 
 # Determine repo-relative target based on source path
 get_repo_path() {
-    local src="$(realpath "${1%/}")"
+    local src
+    src="$(realpath "${1%/}")"
 
-    if [[ "$src" == "$HOME/.config/"* ]]; then
+    if [[ "$src" == "$HOME/.local/"* ]]; then
+        echo "$DOTFILES_DIR/local/${src#$HOME/.local/}"
+    elif [[ "$src" == "$HOME/.config/"* ]]; then
         echo "$DOTFILES_DIR/config/${src#$HOME/.config/}"
-    elif [[ "$src" == "$HOME/.local/bin/"* ]]; then
-        echo "$DOTFILES_DIR/scripts/${src#$HOME/.local/bin/}"
     elif [[ "$src" == "$HOME/"* || "$src" == "$HOME" ]]; then
         echo "$DOTFILES_DIR/home/${src#$HOME/}"
     else
