@@ -31,6 +31,7 @@ fzf
 gcc
 gdb
 ghostty
+glow
 gnome-disk-utility
 gnome-disk-utility
 gnome-font-viewer
