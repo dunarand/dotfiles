@@ -223,6 +223,7 @@ alias untar='tar -zxvf'
 alias wget='wget -c'
 alias tb='nc termbin.com 9999'
 alias please='sudo'
+alias rich='rich -n -g'
 
 # ----------------------------------------------------------------------------
 # Aliases - Quick Config Access
