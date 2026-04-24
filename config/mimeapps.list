@@ -10,6 +10,7 @@ text/x-python=nvim.desktop;
 text/x-tex=texstudio.desktop;
 text/csv=tad.desktop;
 application/json=nvim.desktop;
+application/zip=org.kde.ark.desktop;org.gnome.FileRoller.desktop;
 
 [Default Applications]
 text/html=brave-browser.desktop
@@ -32,3 +33,4 @@ text/csv=tad.desktop
 application/json=nvim.desktop
 application/x-zerosize=nvim.desktop
 x-scheme-handler/mailto=org.mozilla.Thunderbird.desktop;
+application/zip=org.gnome.FileRoller.desktop
