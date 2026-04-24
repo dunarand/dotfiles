@@ -1,6 +1,27 @@
 #!/bin/bash
 set -euo pipefail
 
+# Directories to exclude (relative names for fd --exclude, absolute paths filtered from DIRS)
+EXCLUDE_DIRS=(
+    .git
+    .cache
+    node_modules
+    .local
+    .env
+    .venv
+)
+
+# Absolute paths to exclude from home directory traversal
+EXCLUDE_ABS=(
+    "$HOME/.local"
+    "$HOME/Games"
+)
+
+FZF_HEIGHT="40%"
+for arg in "$@"; do
+    [[ "$arg" == "--float" ]] && FZF_HEIGHT="100%"
+done
+
 CWD="$(pwd)"
 HOME_DIR="$HOME"
 
@@ -11,13 +32,19 @@ if [[ "$CWD" == "$HOME_DIR" ]]; then
     USE_HOME_FILTER=true
 fi
 
-MODE=$(printf "Files\nRipgrep" | fzf --prompt="Choose mode: " --height=20%)
+MODE=$(printf "Files\nRipgrep" | fzf --prompt="Choose mode: " --height="$FZF_HEIGHT")
 [[ -z "$MODE" ]] && exit 0
 
 # BUILD DIRECTORY LIST
 if [[ "$USE_HOME_FILTER" == true ]]; then
     while IFS= read -r -d '' item; do
         base=$(basename "$item")
+        # Skip excluded absolute paths
+        skip=false
+        for excl in "${EXCLUDE_ABS[@]}"; do
+            [[ "$item" == "$excl" ]] && skip=true && break
+        done
+        $skip && continue
         if [[ "$base" == ".config" ]] || [[ "$base" != .* ]]; then
             DIRS+=("$item")
         fi
@@ -28,18 +55,16 @@ fi
 
 # fd
 if [[ "$MODE" == "Files" ]]; then
-    FD_CMD=(fd --type f --hidden --follow
-        --exclude .git
-        --exclude .cache
-        --exclude node_modules)
-
-    # Correct way to pass directories
+    FD_CMD=(fd --type f --hidden --follow)
+    for excl in "${EXCLUDE_DIRS[@]}"; do
+        FD_CMD+=(--exclude "$excl")
+    done
     for d in "${DIRS[@]}"; do
         FD_CMD+=(--search-path "$d")
     done
 
     "${FD_CMD[@]}" \
-        | fzf --layout=reverse --border \
+        | fzf --layout=reverse --border --height="$FZF_HEIGHT" \
             --preview 'bat --style=numbers --color=always --line-range :300 {}' \
             --bind 'enter:become(xdg-open {+})' \
             --bind 'ctrl-v:become(xdg-open {+})' \
@@ -55,7 +80,7 @@ if [[ "$MODE" == "Ripgrep" ]]; then
         DIRS_QUOTED+=" $(printf "%q" "$d")"
     done
 
-    fzf --ansi --phony --delimiter ':' --prompt 'rg> ' \
+    fzf --height="$FZF_HEIGHT" --ansi --phony --delimiter ':' --prompt 'rg> ' \
         --bind "change:reload:[[ -z {q} ]] && echo '' && exit 0; rg --follow --line-number --no-heading --color=always -- {q} $DIRS_QUOTED || true" \
         --preview 'bat --style=numbers --color=always {1} --highlight-line {2}' \
         --bind 'enter:become(xdg-open {1})'
