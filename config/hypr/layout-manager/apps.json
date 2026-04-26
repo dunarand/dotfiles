@@ -1,7 +1,10 @@
 {
   "apps": {
     "Brave-browser": "brave",
+    "brave-browser": "brave",
+    "brave": "brave",
     "Code": "code",
+    "code": "code",
     "Tad": "tad",
     "com.mitchellh.ghostty": "ghostty",
     "org.gnome.Nautilus": "nautilus",

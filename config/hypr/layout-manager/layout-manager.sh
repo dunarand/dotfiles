@@ -85,8 +85,8 @@ stash_conflicting_windows() {
 # ---------------------------------------------------------------------------
 
 layout_workspaces() {
-    # $1 = path to layout json
-    jq -r '[.windows[].workspace_id] | unique[]' "$1"
+    # $1 = path to layout json — new format: .workspaces keys are the ws IDs
+    jq -r '.workspaces | keys[]' "$1"
 }
 
 # ---------------------------------------------------------------------------

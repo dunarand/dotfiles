@@ -2,10 +2,16 @@
 """
 capture.py — Hyprland Layout Capture
 Reads current clients via hyprctl, filters ignored windows,
-and serialises the result into a structured layout definition.
+and serialises the layout as a per-workspace 2D matrix.
+
+Matrix format (per workspace):
+  Outer list  = columns, sorted left→right by X coordinate
+  Inner list  = rows within each column, sorted top→bottom by Y coordinate
+  Cell value  = single int ID  (ungrouped window)
+               | list of ints  (group: all members share this cell)
 
 Usage:
-    python3 capture.py [--output <file.json>] [--name "My Layout"]
+    python3 capture.py --name <name> [--apps <apps.json>] [--output <file>]
 """
 
 from __future__ import annotations
@@ -14,7 +20,6 @@ import argparse
 import json
 import subprocess
 import sys
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -23,289 +28,215 @@ from typing import Optional
 # ---------------------------------------------------------------------------
 
 
-@dataclass
 class IgnoreRule:
-    """
-    A window is ignored when ALL non-None fields match.
-    Matching is case-insensitive substring unless exact=True.
-    """
-
-    wm_class: Optional[str] = None
-    title: Optional[str] = None
-    exact: bool = False  # if True, require full-string equality
+    def __init__(
+        self,
+        wm_class: Optional[str] = None,
+        title: Optional[str] = None,
+        exact: bool = False,
+    ):
+        self.wm_class = wm_class
+        self.title = title
+        self.exact = exact
 
     def matches(self, client: dict) -> bool:
-        client_class = (client.get("class") or "").lower()
-        client_title = (client.get("title") or "").lower()
+        cls = (client.get("class") or "").lower()
+        title = (client.get("title") or "").lower()
 
         def _match(pattern: str, value: str) -> bool:
             p = pattern.lower()
             return value == p if self.exact else p in value
 
-        if self.wm_class is not None and not _match(
-            self.wm_class, client_class
-        ):
+        if self.wm_class is not None and not _match(self.wm_class, cls):
             return False
-        if self.title is not None and not _match(self.title, client_title):
+        if self.title is not None and not _match(self.title, title):
             return False
-        # At least one field must have been specified for the rule to fire
         if self.wm_class is None and self.title is None:
             return False
         return True
 
 
 def load_ignore_rules(apps_path: Path) -> list[IgnoreRule]:
-    """
-    Load ignore rules from the 'ignore' key in apps.json.
-
-    Each entry may specify 'wm_class', 'title', or both (AND logic).
-    Matching is case-insensitive substring by default; set "exact": true
-    for full-string equality.
-
-    Example apps.json entry:
-        "ignore": [
-            { "wm_class": "Spotify" },
-            { "wm_class": "com.mitchellh.ghostty", "title": "btm-monitor" },
-            { "title": "Picture-in-Picture", "exact": true }
-        ]
-    """
-    if not apps_path.exists():
-        sys.exit(f"Error: apps file not found: {apps_path}")
-    try:
-        raw = json.loads(apps_path.read_text())
-    except json.JSONDecodeError as exc:
-        sys.exit(f"Error reading {apps_path}: {exc}")
-
-    rules: list[IgnoreRule] = []
-    for entry in raw.get("ignore", []):
-        rules.append(
-            IgnoreRule(
-                wm_class=entry.get("wm_class"),
-                title=entry.get("title"),
-                exact=bool(entry.get("exact", False)),
-            )
+    raw = json.loads(apps_path.read_text())
+    return [
+        IgnoreRule(
+            wm_class=e.get("wm_class"),
+            title=e.get("title"),
+            exact=bool(e.get("exact", False)),
         )
-    return rules
+        for e in raw.get("ignore", [])
+    ]
+
+
+def is_ignored(client: dict, rules: list[IgnoreRule]) -> bool:
+    return any(r.matches(client) for r in rules)
 
 
 # ---------------------------------------------------------------------------
-# Data model
-# ---------------------------------------------------------------------------
-
-
-@dataclass
-class WindowGeometry:
-    """Only recorded for floating windows; None for tiled (compositor decides)."""
-
-    x: int
-    y: int
-    width: int
-    height: int
-
-
-@dataclass
-class LayoutWindow:
-    """Everything the launcher needs — nothing it doesn't."""
-
-    wm_class: str  # used to identify the window after launch
-    initial_class: str  # used to launch / match via windowrule
-    initial_title: str  # used to launch / match via windowrule
-    workspace_id: int  # target workspace
-    floating: bool
-    # Only set when floating=True; None otherwise
-    geometry: Optional[WindowGeometry]
-    # Index into CapturedLayout.groups; None when not part of a group
-    group_index: Optional[int]
-    # True when this window should be the active tab in its group
-    is_group_leader: bool
-
-
-@dataclass
-class CapturedLayout:
-    name: str
-    windows: list[LayoutWindow] = field(default_factory=list)
-    # Each inner list holds window *indices* (into self.windows) that form a group.
-    # Addresses are ephemeral; indices are stable in the saved file.
-    groups: list[list[int]] = field(default_factory=list)
-
-
-# ---------------------------------------------------------------------------
-# hyprctl helpers
+# hyprctl
 # ---------------------------------------------------------------------------
 
 
 def fetch_clients() -> list[dict]:
-    """Run `hyprctl clients -j` and return the parsed JSON list."""
     try:
-        result = subprocess.run(
+        r = subprocess.run(
             ["hyprctl", "clients", "-j"],
             capture_output=True,
             text=True,
             check=True,
         )
     except FileNotFoundError:
-        sys.exit("Error: hyprctl not found. Are you running inside Hyprland?")
-    except subprocess.CalledProcessError as exc:
-        sys.exit(
-            f"Error: hyprctl exited with code {exc.returncode}:\n{exc.stderr}"
-        )
-
-    try:
-        return json.loads(result.stdout)
-    except json.JSONDecodeError as exc:
-        sys.exit(f"Error: could not parse hyprctl output as JSON:\n{exc}")
+        sys.exit("Error: hyprctl not found.")
+    except subprocess.CalledProcessError as e:
+        sys.exit(f"Error: hyprctl failed:\n{e.stderr}")
+    return json.loads(r.stdout)
 
 
 # ---------------------------------------------------------------------------
-# Filtering
+# Matrix builder
 # ---------------------------------------------------------------------------
 
 
-def is_ignored(client: dict, rules: list[IgnoreRule]) -> bool:
-    return any(rule.matches(client) for rule in rules)
+def build_workspace_matrix(clients: list[dict]) -> dict:
+    """
+    Given a list of tiled, non-ignored clients all on the same workspace,
+    return a workspace dict:
 
-
-# ---------------------------------------------------------------------------
-# Parsing
-# ---------------------------------------------------------------------------
-
-
-def parse_clients(
-    clients: list[dict],
-    ignore_rules: list[IgnoreRule],
-) -> CapturedLayout:
-    """Filter clients and build a CapturedLayout with lean, launch-ready data."""
-
-    # ------------------------------------------------------------------
-    # Pass 1: collect unique address-level groups from raw hyprctl data.
-    # A group is the "grouped" array on each client; all members share the
-    # same array, so we deduplicate by frozenset.
-    # ------------------------------------------------------------------
-    addr_groups: list[list[str]] = []  # each entry is an ordered addr list
-    seen_group_keys: set[frozenset] = set()
-
-    for c in clients:
-        members: list[str] = c.get("grouped", [])
-        if len(members) > 1:
-            key = frozenset(members)
-            if key not in seen_group_keys:
-                seen_group_keys.add(key)
-                addr_groups.append(members)
-
-    # addr → (group_index_in_addr_groups, is_leader)
-    addr_to_group_info: dict[str, tuple[int, bool]] = {}
-    for gi, group in enumerate(addr_groups):
-        for addr in group:
-            is_leader = group[0] == addr
-            addr_to_group_info[addr] = (gi, is_leader)
-
-    # ------------------------------------------------------------------
-    # Pass 2: filter and build LayoutWindow list.
-    # Track which addr_groups survive (not fully ignored) so we can
-    # remap to window-index groups afterwards.
-    # ------------------------------------------------------------------
-    windows: list[LayoutWindow] = []
-    # addr → window index in `windows` (for later group remapping)
-    addr_to_win_idx: dict[str, int] = {}
-
-    for c in clients:
-        if is_ignored(c, ignore_rules):
-            continue
-
-        ws_id: int = c["workspace"]["id"]
-        if ws_id < 0:  # special / scratchpad workspaces
-            continue
-
-        floating: bool = c["floating"]
-        geo: Optional[WindowGeometry] = None
-        if floating:
-            geo = WindowGeometry(
-                x=c["at"][0],
-                y=c["at"][1],
-                width=c["size"][0],
-                height=c["size"][1],
-            )
-
-        group_info = addr_to_group_info.get(c["address"])
-        # group_index and is_group_leader are resolved in Pass 3
-        win = LayoutWindow(
-            wm_class=c["class"],
-            initial_class=c["initialClass"],
-            initial_title=c["initialTitle"],
-            workspace_id=ws_id,
-            floating=floating,
-            geometry=geo,
-            group_index=group_info[0]
-            if group_info
-            else None,  # addr-group idx (temporary)
-            is_group_leader=group_info[1] if group_info else False,
-        )
-        addr_to_win_idx[c["address"]] = len(windows)
-        windows.append(win)
-
-    # ------------------------------------------------------------------
-    # Pass 3: build final index-based groups and patch group_index on
-    # each window to point into the final groups list.
-    # ------------------------------------------------------------------
-    # addr_group_idx → [window indices]
-    addr_gi_to_win_indices: dict[int, list[int]] = {}
-    for addr, win_idx in addr_to_win_idx.items():
-        info = addr_to_group_info.get(addr)
-        if info is None:
-            continue
-        addr_gi = info[0]
-        addr_gi_to_win_indices.setdefault(addr_gi, []).append(win_idx)
-
-    # Only keep groups where at least 2 members survived filtering
-    final_groups: list[list[int]] = []
-    addr_gi_to_final_gi: dict[int, int] = {}
-    for addr_gi, win_indices in addr_gi_to_win_indices.items():
-        if len(win_indices) >= 2:
-            addr_gi_to_final_gi[addr_gi] = len(final_groups)
-            # Preserve original order from addr_groups
-            ordered = sorted(win_indices, key=lambda i: i)
-            final_groups.append(ordered)
-
-    # Patch windows: replace temporary addr-group idx with final idx (or None)
-    for win in windows:
-        if win.group_index is not None:
-            final_gi = addr_gi_to_final_gi.get(win.group_index)
-            win.group_index = final_gi  # None if group was culled
-
-    return CapturedLayout(name="", windows=windows, groups=final_groups)
-
-
-# ---------------------------------------------------------------------------
-# Serialisation
-# ---------------------------------------------------------------------------
-
-
-def layout_to_dict(layout: CapturedLayout) -> dict:
-    def win_dict(w: LayoutWindow) -> dict:
-        d: dict = {
-            "wm_class": w.wm_class,
-            "initial_class": w.initial_class,
-            "initial_title": w.initial_title,
-            "workspace_id": w.workspace_id,
-            "floating": w.floating,
-        }
-        if w.floating and w.geometry is not None:
-            d["geometry"] = {
-                "x": w.geometry.x,
-                "y": w.geometry.y,
-                "width": w.geometry.width,
-                "height": w.geometry.height,
-            }
-        if w.group_index is not None:
-            d["group_index"] = w.group_index
-            d["is_group_leader"] = w.is_group_leader
-        return d
-
-    return {
-        "name": layout.name,
-        "groups": layout.groups,
-        "windows": [win_dict(w) for w in layout.windows],
+    {
+      "matrix": [[col0_row0, col0_row1, ...], [col1_row0, ...], ...],
+      "windows": {
+        "1": {"wm_class": ..., "initial_class": ..., "initial_title": ...,
+              "width": ..., "height": ..., "is_group_leader": ...},
+        ...
+      }
     }
+
+    Cell values in the matrix:
+      - int               → single window ID
+      - [int, int, ...]   → group (all members at this cell position)
+
+    Algorithm:
+      1. Deduplicate groups: multiple clients sharing the same grouped[] array
+         occupy the same (x, y) cell. Collapse them into one representative
+         for column/row assignment; record all their IDs for the cell.
+      2. Find unique X values → columns (sorted ascending).
+      3. Within each column, sort cells by Y → rows.
+      4. Assign sequential IDs (1, 2, 3…) across all cells in reading order
+         (left→right, top→bottom within each column).
+    """
+
+    if not clients:
+        return {"matrix": [], "windows": {}}
+
+    # ── Step 1: collapse groups into cells ──────────────────────────────
+    # A "cell" is a unique (x, y) position. Grouped windows share (x, y).
+    # We represent each cell as: (x, y, width, height, [client, ...])
+
+    # group_key → list of clients in that group
+    # For ungrouped windows, group_key = their own address (unique)
+    cell_map: dict[str, list[dict]] = {}
+
+    for c in clients:
+        grouped = c.get("grouped", [])
+        # Hyprland lists all group members in grouped[]; use the sorted tuple
+        # as a stable key so every member maps to the same cell.
+        key = tuple(sorted(grouped)) if len(grouped) > 1 else (c["address"],)
+        cell_map.setdefault(str(key), []).append(c)
+
+    # Build cell list: (x, y, width, height, [clients])
+    cells: list[tuple[int, int, int, int, list[dict]]] = []
+    for members in cell_map.values():
+        # All members share the same at[] and size[] (they overlap exactly)
+        rep = members[0]
+        x, y = rep["at"][0], rep["at"][1]
+        w, h = rep["size"][0], rep["size"][1]
+        cells.append((x, y, w, h, members))
+
+    # ── Step 2 & 3: build columns ────────────────────────────────────────
+    # Unique X values → column boundaries
+    unique_x = sorted(set(x for x, y, w, h, _ in cells))
+
+    # Group cells by their X column, then sort each column by Y
+    columns: list[list[tuple[int, int, int, int, list[dict]]]] = []
+    for col_x in unique_x:
+        col_cells = [(x, y, w, h, m) for x, y, w, h, m in cells if x == col_x]
+        col_cells.sort(key=lambda c: c[1])  # sort by y
+        columns.append(col_cells)
+
+    # ── Step 4: assign sequential IDs ───────────────────────────────────
+    next_id = 1
+    # cell_key → list of assigned IDs (one per group member)
+    cell_key_to_ids: dict[str, list[int]] = {}
+
+    # Also need to know which member is the group leader
+    # (first address in the grouped[] array = leader in Hyprland)
+    def is_leader(client: dict, members: list[dict]) -> bool:
+        grouped = client.get("grouped", [])
+        if not grouped or len(grouped) == 1:
+            return False  # ungrouped — not relevant
+        return grouped[0] == client["address"]
+
+    matrix: list[list] = []
+    windows: dict[str, dict] = {}
+
+    for col_cells in columns:
+        col_entries: list = []
+        for x, y, w, h, members in col_cells:
+            ids: list[int] = []
+            for c in members:
+                wid = str(next_id)
+                next_id += 1
+                ids.append(int(wid))
+
+                entry: dict = {
+                    "wm_class": c["class"],
+                    "initial_class": c["initialClass"],
+                    "initial_title": c["initialTitle"],
+                    "width": w,
+                    "height": h,
+                }
+                # Only add group metadata when actually in a multi-member group
+                if len(members) > 1:
+                    entry["is_group_leader"] = is_leader(c, members)
+
+                windows[wid] = entry
+
+            # Cell = single int for ungrouped, list of ints for group
+            col_entries.append(ids[0] if len(ids) == 1 else ids)
+
+        matrix.append(col_entries)
+
+    return {"matrix": matrix, "windows": windows}
+
+
+# ---------------------------------------------------------------------------
+# Main capture
+# ---------------------------------------------------------------------------
+
+
+def capture(apps_path: Path) -> dict:
+    rules = load_ignore_rules(apps_path)
+    clients = fetch_clients()
+
+    # Filter: drop ignored, special workspaces (id < 0), and floating
+    filtered = [
+        c
+        for c in clients
+        if not is_ignored(c, rules)
+        and c["workspace"]["id"] > 0
+        and not c["floating"]
+    ]
+
+    # Group by workspace
+    by_ws: dict[int, list[dict]] = {}
+    for c in filtered:
+        by_ws.setdefault(c["workspace"]["id"], []).append(c)
+
+    workspaces = {}
+    for ws_id in sorted(by_ws):
+        workspaces[str(ws_id)] = build_workspace_matrix(by_ws[ws_id])
+
+    return workspaces
 
 
 # ---------------------------------------------------------------------------
@@ -313,70 +244,29 @@ def layout_to_dict(layout: CapturedLayout) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def build_arg_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(
-        description="Capture the current Hyprland client layout to a JSON file.",
-    )
-    p.add_argument(
-        "--name",
-        "-n",
-        default="",
-        help="Human-readable name for this layout (e.g. 'dev-session').",
-    )
-    p.add_argument(
-        "--output",
-        "-o",
-        type=Path,
-        default=None,
-        help="Path to write the JSON layout file. "
-        "Defaults to <n>.json in the current directory.",
-    )
-    p.add_argument(
-        "--apps",
-        "-a",
-        type=Path,
-        default=Path(__file__).parent / "apps.json",
-        help="Path to apps.json (contains ignore rules). "
-        "Default: apps.json next to this script.",
-    )
-    p.add_argument(
-        "--print",
-        "-p",
-        action="store_true",
-        dest="print_output",
-        help="Print the JSON to stdout in addition to writing a file.",
-    )
-    p.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Parse and print without writing any file.",
-    )
-    return p
-
-
 def main() -> None:
-    parser = build_arg_parser()
-    args = parser.parse_args()
+    p = argparse.ArgumentParser(description="Capture Hyprland layout to JSON.")
+    p.add_argument("--name", "-n", default="unnamed")
+    p.add_argument("--output", "-o", type=Path, default=None)
+    p.add_argument(
+        "--apps", "-a", type=Path, default=Path(__file__).parent / "apps.json"
+    )
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--print", "-p", action="store_true", dest="print_output")
+    args = p.parse_args()
 
-    rules = load_ignore_rules(args.apps)
-
-    raw_clients = fetch_clients()
-    layout = parse_clients(raw_clients, rules)
-    layout.name = args.name or "unnamed"
-
-    payload = layout_to_dict(layout)
+    workspaces = capture(args.apps)
+    payload = {"name": args.name, "workspaces": workspaces}
     json_text = json.dumps(payload, indent=2)
 
     if not args.dry_run:
-        out_path: Path = args.output or Path(f"{layout.name}.json")
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(json_text)
-        print(f"Layout '{layout.name}' captured → {out_path}", file=sys.stderr)
+        out = args.output or Path(f"{args.name}.json")
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json_text)
+        total_windows = sum(len(ws["windows"]) for ws in workspaces.values())
+        print(f"Layout '{args.name}' captured → {out}", file=sys.stderr)
         print(
-            f"  {len(layout.windows)} window(s), "
-            f"{len(layout.groups)} group(s), "
-            f"{sum(1 for w in layout.windows if not w.floating)} tiled, "
-            f"{sum(1 for w in layout.windows if w.floating)} floating.",
+            f"  {len(workspaces)} workspace(s), {total_windows} window(s)",
             file=sys.stderr,
         )
 
