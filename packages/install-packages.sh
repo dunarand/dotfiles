@@ -24,9 +24,18 @@ if [[ -f "$FILE" ]] && confirm "pacman-needed.txt"; then
     fi
 fi
 
-# 2. pacman.txt
-FILE="$SCRIPT_DIR/pacman.txt"
-if [[ -f "$FILE" ]] && confirm "pacman.txt"; then
+# 2. pacman-dev.txt
+FILE="$SCRIPT_DIR/pacman-dev.txt"
+if [[ -f "$FILE" ]] && confirm "pacman-dev.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    if (( ${#pkgs[@]} )); then
+        sudo pacman -S --noconfirm "${pkgs[@]}"
+    fi
+fi
+
+# 3. pacman-others.txt
+FILE="$SCRIPT_DIR/pacman-others.txt"
+if [[ -f "$FILE" ]] && confirm "pacman-others.txt"; then
     mapfile -t pkgs < <(read_packages "$FILE")
     if (( ${#pkgs[@]} )); then
         sudo pacman -S "${pkgs[@]}"
@@ -35,7 +44,7 @@ fi
 
 echo "=== AUR INSTALL ==="
 
-# 3. aur.txt (yay)
+# 4. aur.txt (yay)
 FILE="$SCRIPT_DIR/aur.txt"
 if command -v yay &>/dev/null && [[ -f "$FILE" ]] && confirm "aur.txt"; then
     mapfile -t pkgs < <(read_packages "$FILE")
@@ -46,7 +55,7 @@ else
     [[ ! -x "$(command -v yay)" ]] && echo "[skip] yay not installed"
 fi
 
-# 4. flatpak.txt (platpak)
+# 5. flatpak.txt (platpak)
 FILE="$SCRIPT_DIR/flatpak.txt"
 if command -v flatpak &>/dev/null && [[ -f "$FILE" ]] && confirm "flatpak.txt"; then
     mapfile -t pkgs < <(read_packages "$FILE")

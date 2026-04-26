@@ -1,0 +1,20 @@
+# Programming Languages and Package Managers
+go
+lua
+lua51
+luarocks
+nodejs
+npm
+python
+rustup
+cargo
+zig
+
+# Main Dev Tools
+fd
+fzf
+neovim
+python-pip
+python-pipx
+python-uv
+ripgrep
