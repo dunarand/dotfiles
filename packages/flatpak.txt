@@ -1,0 +1,3 @@
+com.github.PintaProject.Pinta
+com.obsproject.Studio.Plugin.DroidCam
+eu.cichy1173.tabela

@@ -46,6 +46,17 @@ else
     [[ ! -x "$(command -v yay)" ]] && echo "[skip] yay not installed"
 fi
 
+# 4. flatpak.txt (platpak)
+FILE="$SCRIPT_DIR/flatpak.txt"
+if command -v flatpak &>/dev/null && [[ -f "$FILE" ]] && confirm "flatpak.txt"; then
+    mapfile -t pkgs < <(read_packages "$FILE")
+    if (( ${#pkgs[@]} )); then
+        flatpak install flathub "${pkgs[@]}"
+    fi
+else
+    [[ ! -x "$(command -v flatpak)" ]] && echo "[skip] flatpak not installed"
+fi
+
 echo "=== OTHER SOURCES ==="
 
 # npm
