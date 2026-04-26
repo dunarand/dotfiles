@@ -1,5 +1,6 @@
 adw-gtk-theme
 alsa-lib
+android-tools
 archlinux-xdg-menu
 baobab
 base-devel
@@ -26,6 +27,7 @@ eza
 fd
 ffmpeg
 fftw
+file-roller
 flatpak
 fzf
 gcc
@@ -74,6 +76,7 @@ procps-ng
 python
 python-gobject
 python-nautilus
+python-ruff
 python-virtualenv
 qbittorrent
 qt5ct
@@ -121,6 +124,7 @@ ttf-nerd-fonts-symbols
 ttf-nerd-fonts-symbols-mono
 unzip
 upower
+v4l2loopback-dkms
 vlc
 wezterm
 wf-recorder
