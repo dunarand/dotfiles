@@ -74,7 +74,7 @@ ssh_only = false
 format = "@[$hostname](bold teal) "
 
 [directory]
-style = "bold cyan"
+style = "bold peach"
 truncation_length = 3
 truncate_to_repo = true
 format = "in [$path]($style)[$read_only]($read_only_style) "

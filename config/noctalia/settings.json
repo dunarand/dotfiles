@@ -31,7 +31,7 @@
         "showIconBackground": false,
         "sortByMostUsed": true,
         "terminalCommand": "ghostty -e",
-        "viewMode": "list"
+        "viewMode": "grid"
     },
     "audio": {
         "mprisBlacklist": [
@@ -90,7 +90,7 @@
             "center": [
                 {
                     "compactMode": false,
-                    "hideMode": "visible",
+                    "hideMode": "idle",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
                     "maxWidth": 145,
@@ -186,6 +186,22 @@
                     "showBadge": true,
                     "showLabelsOnlyWhenOccupied": true,
                     "unfocusedIconsOpacity": 0.5
+                },
+                {
+                    "id": "Spacer",
+                    "width": 20
+                },
+                {
+                    "defaultSettings": {
+                        "adaptScrollSpeed": true,
+                        "fontSize": 10,
+                        "hideWhenEmpty": true,
+                        "scrollMode": "always",
+                        "scrollSpeed": 70,
+                        "verticalRotationDirection": "auto",
+                        "widgetWidth": 300
+                    },
+                    "id": "plugin:lyrics-fetch"
                 }
             ],
             "right": [
@@ -229,8 +245,19 @@
                 },
                 {
                     "defaultSettings": {
+                        "autoPaste": false,
+                        "autoPasteDelay": 300,
+                        "autoPasteOnRightClick": false,
+                        "cardColors": {
+                        },
+                        "customColors": {
+                        },
                         "enableTodoIntegration": false,
+                        "fullscreenMode": false,
+                        "hidePanelBackground": false,
                         "notecardsEnabled": true,
+                        "panelHeight": 0,
+                        "panelWidth": 1450,
                         "pincardsEnabled": true,
                         "showCloseButton": true
                     },
@@ -354,7 +381,7 @@
                     "width": 20
                 },
                 {
-                    "compactMode": true,
+                    "compactMode": false,
                     "diskPath": "/",
                     "iconColor": "none",
                     "id": "SystemMonitor",
@@ -368,8 +395,8 @@
                     "showGpuTemp": true,
                     "showLoadAverage": false,
                     "showMemoryAsPercent": false,
-                    "showMemoryUsage": true,
-                    "showNetworkStats": true,
+                    "showMemoryUsage": false,
+                    "showNetworkStats": false,
                     "showSwapUsage": false,
                     "textColor": "none",
                     "useMonospaceFont": true,
@@ -508,8 +535,8 @@
                         "scale": 2.5,
                         "showBackground": false,
                         "useCustomFont": false,
-                        "x": 1148,
-                        "y": 60
+                        "x": 1142,
+                        "y": 80
                     }
                 ]
             }
@@ -542,10 +569,10 @@
         "onlySameOutput": true,
         "pinnedApps": [
             "brave-browser",
-            "com.mitchellh.ghostty",
             "steam",
             "discord",
-            "spotify"
+            "spotify",
+            "com.mitchellh.ghostty"
         ],
         "pinnedStatic": true,
         "position": "bottom",
