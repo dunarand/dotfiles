@@ -62,6 +62,12 @@ return {
 						"-",
 					},
 				},
+                stylua = {
+                    prepend_args = {
+                        "--column-width",
+                        "100",
+                    }
+                },
 				sql_formatter = {
 					command = "sql-formatter",
 					args = { "--language", "sql" },
