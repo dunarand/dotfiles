@@ -17,16 +17,36 @@ return {
 					vim.lsp.buf.hover,
 					{ buffer = 0, desc = "Show documentation in hover window." }
 				)
-				vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0, desc = "Jump to definition." })
-				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0, desc = "Jump to declaration." })
-				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = 0, desc = "Jump to implementation." })
+				vim.keymap.set(
+					"n",
+					"gd",
+					vim.lsp.buf.definition,
+					{ buffer = 0, desc = "Jump to definition." }
+				)
+				vim.keymap.set(
+					"n",
+					"gD",
+					vim.lsp.buf.declaration,
+					{ buffer = 0, desc = "Jump to declaration." }
+				)
+				vim.keymap.set(
+					"n",
+					"gi",
+					vim.lsp.buf.implementation,
+					{ buffer = 0, desc = "Jump to implementation." }
+				)
 				vim.keymap.set(
 					"n",
 					"go",
 					vim.lsp.buf.type_definition,
 					{ buffer = 0, desc = "Jump to type definition." }
 				)
-				vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { buffer = 0, desc = "Jump to signature help." })
+				vim.keymap.set(
+					"n",
+					"gs",
+					vim.lsp.buf.signature_help,
+					{ buffer = 0, desc = "Jump to signature help." }
+				)
 				vim.keymap.set(
 					"n",
 					"<leader>rn",
@@ -40,7 +60,12 @@ return {
 					{ buffer = 0, desc = "Show references in a Telescope window." }
 				)
 
-				vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { buffer = 0, desc = "Jump to next diagnostic." })
+				vim.keymap.set(
+					"n",
+					"]d",
+					vim.diagnostic.goto_next,
+					{ buffer = 0, desc = "Jump to next diagnostic." }
+				)
 				vim.keymap.set(
 					"n",
 					"[d",
@@ -62,7 +87,12 @@ return {
 						{ buffer = 0, desc = "Range code action." }
 					)
 				else
-					vim.keymap.set("x", "<leader>la", vim.lsp.buf.code_action, { buffer = 0, desc = "Code action." })
+					vim.keymap.set(
+						"x",
+						"<leader>la",
+						vim.lsp.buf.code_action,
+						{ buffer = 0, desc = "Code action." }
+					)
 				end
 			end,
 		})

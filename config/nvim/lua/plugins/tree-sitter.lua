@@ -3,10 +3,10 @@ return {
 	dependencies = {
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
-            branch = "master",
+			branch = "master",
 		},
 	},
-    branch = "master",
+	branch = "master",
 	build = ":TSUpdate",
 	event = { "BufReadPost", "BufNewFile" },
 	config = function()
@@ -66,4 +66,4 @@ return {
 			},
 		})
 	end,
-}
+}

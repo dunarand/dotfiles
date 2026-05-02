@@ -54,18 +54,78 @@ return {
 			vim.api.nvim_input("/# %%<CR>NjVnk:<BS><BS><BS><BS><BS>MoltenEvaluateVisual<CR>")
 		end
 
-		vim.keymap.set("n", "<leader>mi", ":MoltenInit<CR>", { desc = "Molten: Initialize kernel", silent = true })
-		vim.keymap.set("n", "<leader>mw", molten_set_cwd, { desc = "Molten: Set kernel working directory", silent = true })
-		vim.keymap.set("n", "<leader>me", ":MoltenEvaluateOperator<CR>", { desc = "Molten: Evaluate operator", silent = true })
-		vim.keymap.set("n", "<leader>ml", ":MoltenEvaluateLine<CR>", { desc = "Molten: Evaluate line", silent = true })
-		vim.keymap.set("v", "<leader>mv", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "Molten: Evaluate visual", silent = true })
-		vim.keymap.set("n", "<leader>mc", execute_cell, { desc = "Molten: Execute cell block", silent = true })
-		vim.keymap.set("n", "<leader>mo", ":MoltenShowOutput<CR>", { desc = "Molten: Show output window", silent = true })
-		vim.keymap.set("n", "<leader>mO", ":noautocmd lua vim.api.nvim_set_current_win(vim.api.nvim_list_wins()[#vim.api.nvim_list_wins()])<CR>", { desc = "Molten: Enter output", silent = true })
-		vim.keymap.set("n", "<leader>mh", ":MoltenHideOutput<CR>", { desc = "Molten: Hide output window", silent = true })
-		vim.keymap.set("n", "<leader>mI", ":MoltenInterrupt<CR>", { desc = "Molten: Interrupt execution", silent = true })
-		vim.keymap.set("n", "<leader>mR", ":MoltenRestart<CR>", { desc = "Molten: Restart Kernel", silent = true })
-		vim.keymap.set("n", "<leader>mD", ":MoltenDeinit<CR>", { desc = "Molten: Deinitialize", silent = true })
+		vim.keymap.set(
+			"n",
+			"<leader>mi",
+			":MoltenInit<CR>",
+			{ desc = "Molten: Initialize kernel", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mw",
+			molten_set_cwd,
+			{ desc = "Molten: Set kernel working directory", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>me",
+			":MoltenEvaluateOperator<CR>",
+			{ desc = "Molten: Evaluate operator", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>ml",
+			":MoltenEvaluateLine<CR>",
+			{ desc = "Molten: Evaluate line", silent = true }
+		)
+		vim.keymap.set(
+			"v",
+			"<leader>mv",
+			":<C-u>MoltenEvaluateVisual<CR>gv",
+			{ desc = "Molten: Evaluate visual", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mc",
+			execute_cell,
+			{ desc = "Molten: Execute cell block", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mo",
+			":MoltenShowOutput<CR>",
+			{ desc = "Molten: Show output window", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mO",
+			":noautocmd lua vim.api.nvim_set_current_win(vim.api.nvim_list_wins()[#vim.api.nvim_list_wins()])<CR>",
+			{ desc = "Molten: Enter output", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mh",
+			":MoltenHideOutput<CR>",
+			{ desc = "Molten: Hide output window", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mI",
+			":MoltenInterrupt<CR>",
+			{ desc = "Molten: Interrupt execution", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mR",
+			":MoltenRestart<CR>",
+			{ desc = "Molten: Restart Kernel", silent = true }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>mD",
+			":MoltenDeinit<CR>",
+			{ desc = "Molten: Deinitialize", silent = true }
+		)
 		vim.keymap.set("n", "]c", function()
 			vim.fn.search("^# %%", "W")
 		end, { desc = "Molten: Next cell", silent = true })

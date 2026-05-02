@@ -124,7 +124,8 @@ return {
 					lualine_z = expanded and {
 						{
 							function()
-								local mem = vim.loop.resident_set_memory() or vim.uv.resident_set_memory()
+								local mem = vim.loop.resident_set_memory()
+									or vim.uv.resident_set_memory()
 								return string.format(" %.0fMB", mem / 1024 / 1024)
 							end,
 						},
@@ -148,6 +149,11 @@ return {
 
 		toggle_lualine()
 
-		vim.keymap.set("n", "<leader>lt", toggle_lualine, { desc = "Toggle lualine statusline info" })
+		vim.keymap.set(
+			"n",
+			"<leader>lt",
+			toggle_lualine,
+			{ desc = "Toggle lualine statusline info" }
+		)
 	end,
 }

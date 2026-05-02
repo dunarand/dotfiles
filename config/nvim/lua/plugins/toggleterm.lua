@@ -73,8 +73,18 @@ return {
 			{ desc = "Toggle vertical terminal" }
 		)
 
-		vim.keymap.set("n", "<leader>`t", "<Cmd>ToggleTerm direction=tab<CR>", { desc = "Toggle tab terminal" })
-		vim.keymap.set("n", "<leader>`a", "<Cmd>ToggleTermToggleAll<CR>", { desc = "Toggle all terminals" })
+		vim.keymap.set(
+			"n",
+			"<leader>`t",
+			"<Cmd>ToggleTerm direction=tab<CR>",
+			{ desc = "Toggle tab terminal" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>`a",
+			"<Cmd>ToggleTermToggleAll<CR>",
+			{ desc = "Toggle all terminals" }
+		)
 		vim.keymap.set("n", "<leader>`T", function()
 			vim.cmd("Trouble diagnostics toggle focus=false win.position=bottom")
 			vim.defer_fn(function()
@@ -100,7 +110,13 @@ return {
 			direction = "tab",
 			on_open = function(term)
 				vim.cmd("startinsert!")
-				vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+				vim.api.nvim_buf_set_keymap(
+					term.bufnr,
+					"n",
+					"q",
+					"<cmd>close<CR>",
+					{ noremap = true, silent = true }
+				)
 			end,
 		})
 
@@ -108,7 +124,12 @@ return {
 			lazygit:toggle()
 		end
 
-		vim.keymap.set("n", "<leader>`g", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", { desc = "Toggle Lazygit" })
+		vim.keymap.set(
+			"n",
+			"<leader>`g",
+			"<cmd>lua _LAZYGIT_TOGGLE()<CR>",
+			{ desc = "Toggle Lazygit" }
+		)
 
 		local python = Terminal:new({
 			cmd = "python3",
@@ -120,7 +141,12 @@ return {
 			python:toggle()
 		end
 
-		vim.keymap.set("n", "<leader>`p", "<cmd>lua _PYTHON_TOGGLE()<CR>", { desc = "Toggle Python REPL" })
+		vim.keymap.set(
+			"n",
+			"<leader>`p",
+			"<cmd>lua _PYTHON_TOGGLE()<CR>",
+			{ desc = "Toggle Python REPL" }
+		)
 
 		local bottom = Terminal:new({
 			cmd = "btm",
@@ -131,7 +157,12 @@ return {
 			bottom:toggle()
 		end
 
-		vim.keymap.set("n", "<leader>`b", "<cmd>lua _BOTTOM_TOGGLE()<CR>", { desc = "Toggle Bottom" })
+		vim.keymap.set(
+			"n",
+			"<leader>`b",
+			"<cmd>lua _BOTTOM_TOGGLE()<CR>",
+			{ desc = "Toggle Bottom" }
+		)
 
 		function _G.send_line_to_terminal()
 			local line = vim.api.nvim_get_current_line()
@@ -146,7 +177,12 @@ return {
 			require("toggleterm").exec(text, 1)
 		end
 
-		vim.keymap.set("n", "<leader>`s", "<cmd>lua send_line_to_terminal()<CR>", { desc = "Send line to terminal" })
+		vim.keymap.set(
+			"n",
+			"<leader>`s",
+			"<cmd>lua send_line_to_terminal()<CR>",
+			{ desc = "Send line to terminal" }
+		)
 		vim.keymap.set(
 			"v",
 			"<leader>`s",

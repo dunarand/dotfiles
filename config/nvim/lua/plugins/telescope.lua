@@ -2,8 +2,8 @@ return {
 	"nvim-telescope/telescope.nvim",
 	tag = "v0.1.9",
 	dependencies = {
-	    "nvim-lua/plenary.nvim",
-	    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+		"nvim-lua/plenary.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	},
 	config = function()
 		local telescope = require("telescope")
@@ -32,20 +32,20 @@ return {
 					"dist/",
 					"build/",
 					"*.lock",
-                    "__pycache__",
-                    ".idea/",
+					"__pycache__",
+					".idea/",
 				},
 			},
 			pickers = {
 				find_files = {
 					hidden = true,
 					previewer = true,
-                    follow = true,
+					follow = true,
 					find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" },
 				},
-                live_grep = {
-                    additional_args = { "--follow" }
-                },
+				live_grep = {
+					additional_args = { "--follow" },
+				},
 				buffers = {
 					show_all_buffers = true,
 					sort_lastused = true,
@@ -62,65 +62,20 @@ return {
 			},
 		})
 
+		vim.keymap.set("n", "<leader>tf", builtin.find_files, { desc = "Telescope find files" })
+		vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Telescope git files" })
+		vim.keymap.set("n", "<leader>tb", builtin.buffers, { desc = "Telescope find buffers" })
+		vim.keymap.set("n", "<leader>tg", builtin.live_grep, { desc = "Telescope live grep" })
+		vim.keymap.set("n", "<leader>th", builtin.help_tags, { desc = "Telescope help tags" })
+		vim.keymap.set("n", "<leader>td", builtin.diagnostics, { desc = "Telescope diagnostics" })
+		vim.keymap.set("n", "<leader>tr", builtin.oldfiles, { desc = "Telescope recent files" })
 		vim.keymap.set(
-		    "n",
-		    "<leader>tf",
-		    builtin.find_files,
-		    { desc = "Telescope find files" }
+			"n",
+			"<leader>/",
+			builtin.current_buffer_fuzzy_find,
+			{ desc = "Telescope search in buffer" }
 		)
-		vim.keymap.set(
-		    "n",
-		    "<C-p>",
-		    builtin.git_files,
-		    { desc = "Telescope git files" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>tb",
-		    builtin.buffers,
-		    { desc = "Telescope find buffers" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>tg",
-		    builtin.live_grep,
-		    { desc = "Telescope live grep" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>th",
-		    builtin.help_tags,
-		    { desc = "Telescope help tags" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>td",
-		    builtin.diagnostics,
-		    { desc = "Telescope diagnostics" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>tr",
-		    builtin.oldfiles,
-		    { desc = "Telescope recent files" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>/",
-		    builtin.current_buffer_fuzzy_find,
-		    { desc = "Telescope search in buffer" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>tc",
-		    builtin.git_commits,
-		    { desc = "Telescope git commits" }
-		)
-		vim.keymap.set(
-		    "n",
-		    "<leader>ts",
-		    builtin.git_status,
-		    { desc = "Telescope git status" }
-		)
+		vim.keymap.set("n", "<leader>tc", builtin.git_commits, { desc = "Telescope git commits" })
+		vim.keymap.set("n", "<leader>ts", builtin.git_status, { desc = "Telescope git status" })
 	end,
 }

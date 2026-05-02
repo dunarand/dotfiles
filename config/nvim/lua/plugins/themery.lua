@@ -24,6 +24,11 @@ return {
 			},
 			livePreview = true,
 		})
-		vim.keymap.set("n", "<leader>cs", "<cmd>Themery<CR>", { desc = "Open Themery theme picker" })
+		vim.keymap.set(
+			"n",
+			"<leader>cs",
+			"<cmd>Themery<CR>",
+			{ desc = "Open Themery theme picker" }
+		)
 	end,
 }

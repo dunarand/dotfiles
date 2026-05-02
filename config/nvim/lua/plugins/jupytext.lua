@@ -69,13 +69,16 @@ return {
 
 			local function jupytext_pair()
 				local file = vim.fn.expand("%:p")
-				vim.fn.system("jupytext --set-formats ipynb,py:percent " .. vim.fn.shellescape(file))
+				vim.fn.system(
+					"jupytext --set-formats ipynb,py:percent " .. vim.fn.shellescape(file)
+				)
 				vim.notify("Paired with .py file", vim.log.levels.INFO)
 			end
 
 			local function jupytext_convert_to_py()
 				local file = vim.fn.expand("%:p")
-				local output = vim.fn.system("jupytext --to py:percent " .. vim.fn.shellescape(file))
+				local output =
+					vim.fn.system("jupytext --to py:percent " .. vim.fn.shellescape(file))
 				if vim.v.shell_error == 0 then
 					vim.notify("Converted to .py format", vim.log.levels.INFO)
 					if file:match("%.ipynb$") then
@@ -135,7 +138,9 @@ return {
 					{
 						on_exit = function(_, exit_code)
 							if exit_code == 0 then
-								vim.fn.jobstart(string.format("touch %s", vim.fn.shellescape(ipynb_file)))
+								vim.fn.jobstart(
+									string.format("touch %s", vim.fn.shellescape(ipynb_file))
+								)
 								vim.notify("Execution complete.", vim.log.levels.INFO)
 							else
 								vim.notify("Execution failed", vim.log.levels.ERROR)
@@ -154,7 +159,8 @@ return {
 					return
 				end
 
-				local check_cmd = string.format("jupytext --test %s", vim.fn.shellescape(ipynb_file))
+				local check_cmd =
+					string.format("jupytext --test %s", vim.fn.shellescape(ipynb_file))
 				vim.fn.jobstart(check_cmd, {
 					on_stdout = function(_, data)
 						if data then
@@ -169,7 +175,10 @@ return {
 						if exit_code == 0 then
 							vim.notify("✓ Pairing is correctly configured!", vim.log.levels.INFO)
 						else
-							vim.notify("✗ Pairing may not be set up. Run :JupytextPair", vim.log.levels.WARN)
+							vim.notify(
+								"✗ Pairing may not be set up. Run :JupytextPair",
+								vim.log.levels.WARN
+							)
 						end
 					end,
 				})
@@ -264,7 +273,11 @@ return {
 				{ desc = "Convert to notebook format" }
 			)
 
-			vim.api.nvim_create_user_command("JupytextExecute", jupytext_execute, { desc = "Execute notebook" })
+			vim.api.nvim_create_user_command(
+				"JupytextExecute",
+				jupytext_execute,
+				{ desc = "Execute notebook" }
+			)
 
 			vim.api.nvim_create_user_command(
 				"JupytextExecuteAndReload",

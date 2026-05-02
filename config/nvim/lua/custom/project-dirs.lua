@@ -62,10 +62,15 @@ function M.create_project(project_name, template_name)
 	if template.commands and #template.commands > 0 then
 		for _, cmd in ipairs(template.commands) do
 			local processed_cmd = process_content(cmd, vars)
-			local output = vim.fn.system(string.format("cd %s && %s", vim.fn.shellescape(project_path), processed_cmd))
+			local output = vim.fn.system(
+				string.format("cd %s && %s", vim.fn.shellescape(project_path), processed_cmd)
+			)
 
 			if vim.v.shell_error ~= 0 then
-				vim.notify("Error running command: " .. processed_cmd .. "\n" .. output, vim.log.levels.ERROR)
+				vim.notify(
+					"Error running command: " .. processed_cmd .. "\n" .. output,
+					vim.log.levels.ERROR
+				)
 			end
 		end
 	end

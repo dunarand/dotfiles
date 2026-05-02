@@ -14,15 +14,15 @@ return {
 		i(0),
 	}),
 
-    s("np", {
-        t({ "import numpy as np", "" }),
-        i(0),
-    }),
+	s("np", {
+		t({ "import numpy as np", "" }),
+		i(0),
+	}),
 
-    s("pd", {
-        t({ "import pandas as pd", "" }),
-        i(0),
-    }),
+	s("pd", {
+		t({ "import pandas as pd", "" }),
+		i(0),
+	}),
 
 	s("plt", {
 		t({ "import matplotlib.pyplot as plt", "" }),
