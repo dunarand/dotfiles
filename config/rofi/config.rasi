@@ -4,7 +4,8 @@ configuration {
 	fixed-num-lines: true;
 	show-icons: true;
 	case-sensitive: false;
-	matching: "prefix";
+	matching: "fuzzy";
+    sorting-method: "fzf";
     matching-negate-char: "!";
     normalize-match: true;
     scroll-method: 1;

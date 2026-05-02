@@ -310,12 +310,6 @@
                     "width": 20
                 },
                 {
-                    "displayMode": "onhover",
-                    "iconColor": "tertiary",
-                    "id": "Bluetooth",
-                    "textColor": "none"
-                },
-                {
                     "defaultSettings": {
                         "autoMount": false,
                         "fileBrowser": "yazi",
@@ -326,6 +320,12 @@
                         "terminalCommand": "kitty"
                     },
                     "id": "plugin:usb-drive-manager"
+                },
+                {
+                    "displayMode": "onhover",
+                    "iconColor": "tertiary",
+                    "id": "Bluetooth",
+                    "textColor": "none"
                 },
                 {
                     "displayMode": "onhover",
