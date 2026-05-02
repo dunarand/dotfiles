@@ -1,0 +1,6 @@
+require("keybinds.general")
+require("keybinds.groups")
+require("keybinds.keys")
+require("keybinds.submaps")
+require("keybinds.utils")
+require("keybinds.workspaces")

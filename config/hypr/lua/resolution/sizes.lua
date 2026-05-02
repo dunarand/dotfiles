@@ -1,0 +1,16 @@
+return {
+	ten = 0.10,
+	twenty = 0.20,
+	twentyfive = 0.25,
+	thirty = 0.30,
+	thirtythree = 0.33,
+	forty = 0.40,
+	fifty = 0.50,
+	sixty = 0.60,
+	sixtysix = 0.66,
+	sixtynine = 0.69,
+	seventy = 0.70,
+	seventyfive = 0.75,
+	eighty = 0.80,
+	ninety = 0.90,
+}
