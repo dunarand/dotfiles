@@ -14,4 +14,3 @@ end
 
 require("config")
 require("custom")
-require("ftypes")
