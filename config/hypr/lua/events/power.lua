@@ -1,0 +1,3 @@
+-- Power Events
+--
+-- Power events using hyprland.start and hyprland.shutdown.

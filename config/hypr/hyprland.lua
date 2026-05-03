@@ -14,6 +14,7 @@ require("autostart.services")
 -- Medium Priority
 require("core.input")
 require("keybinds")
+require("events")
 
 -- Low Priority
 require("autostart.applications")
@@ -24,3 +25,5 @@ require("core.plugins")
 require("windowrules")
 require("core.workspaces")
 require("core.permissions")
+
+require("utils.minimize")
