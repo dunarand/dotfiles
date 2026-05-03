@@ -35,20 +35,11 @@ hl.bind(
 	hl.dsp.exec_cmd("killall qs && qs -c noctalia-shell"),
 	{ description = "Restart/Refresh Noctalia Shell" }
 )
-hl.bind(modb .. "ALT + SHIFT + k", function()
-	local current = hl.dsp.exec_cmd([[
-    hyprctl devices -j |
-        jq -r '.keyboards[] |
-        .active_keymap' |
-        head -n1 |
-        cut -c1-2 |
-        tr 'a-z' 'A-Z']])
-	if current == "EN" then
-		hl.config({ input = { kb_layout = "tr" } })
-	else
-		hl.config({ input = { kb_layout = "us" } })
-	end
-end, { locked = true, description = "Switch Keyboard Layout" })
+hl.bind(
+	modb .. "ALT + SHIFT + k",
+	hl.dsp.exec_cmd("hyprctl switchxkblayout current next"),
+	{ locked = true, description = "Switch Keyboard Layout" }
+)
 hl.bind("ALT + p", wr.generate_windowrule, { description = "Focused Window Properties" })
 
 -- ===============================================
@@ -209,11 +200,6 @@ hl.bind(
 	{ mouse = true, description = "Resize Window & Keep Aspect Ratio (Hold)" }
 )
 hl.bind(modb .. "mouse:274", hl.dsp.window.close(), { description = "Close/Kill Focused Window" })
-hl.bind(
-	modb .. "SHIFT + mouse:274",
-	hl.dsp.exec_cmd("~/.config/hypr/scripts/minimize.sh"),
-	{ description = "Toggle Window Minimized State" }
-)
 
 -- ===============================================
 
@@ -231,11 +217,11 @@ hl.bind(
 
 -- ===============================================
 
-hl.bind(
-	modb .. "ALT + mouse:272",
-	hl.dsp.exec_cmd("~/.config/hypr/scripts/minimize.sh"),
-	{ description = "Minimize Window" }
-)
+-- hl.bind(
+-- 	modb .. "ALT + mouse:272",
+-- 	hl.dsp.exec_cmd("~/.config/hypr/scripts/minimize.sh"),
+-- 	{ description = "Minimize Window" }
+-- )
 hl.bind(
 	modb .. "ALT + mouse:273",
 	hl.dsp.window.fullscreen({ mode = "maximized" }),
