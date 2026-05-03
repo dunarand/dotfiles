@@ -1,3 +1,5 @@
+local min = require("utils.minimize")
+
 local k = require("keybinds.keys")
 local modb = k.modb
 
@@ -63,9 +65,10 @@ hl.bind(
 	hl.dsp.workspace.toggle_special("minimized"),
 	{ description = "Toggle Minimized Workspace" }
 )
+hl.bind(modb .. "SHIFT + z", min.minimize_toggle, { description = "Toggle Window Minimized State" })
 hl.bind(
-	modb .. "SHIFT + z",
-	hl.dsp.exec_cmd("~/.config/hypr/scripts/minimize.sh"),
+	modb .. "ALT + mouse:272",
+	min.minimize_toggle,
 	{ description = "Toggle Window Minimized State" }
 )
 

@@ -217,11 +217,6 @@ hl.bind(
 
 -- ===============================================
 
--- hl.bind(
--- 	modb .. "ALT + mouse:272",
--- 	hl.dsp.exec_cmd("~/.config/hypr/scripts/minimize.sh"),
--- 	{ description = "Minimize Window" }
--- )
 hl.bind(
 	modb .. "ALT + mouse:273",
 	hl.dsp.window.fullscreen({ mode = "maximized" }),
