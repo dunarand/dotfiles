@@ -9,7 +9,7 @@ hl.window_rule({
 	workspace = 1,
 	focus_on_activate = true,
 	fullscreen = true,
-	tag = "game",
+	content = "game",
 })
 
 -- ===============================================
@@ -40,7 +40,7 @@ hl.window_rule({
 	workspace = 1,
 	focus_on_activate = true,
 	fullscreen = true,
-	tag = "game",
+	content = "game",
 })
 
 -- ===============================================
@@ -51,7 +51,7 @@ hl.window_rule({
 	workspace = 1,
 	focus_on_activate = true,
 	fullscreen = true,
-	tag = "game",
+	content = "game",
 })
 
 -- ===============================================
@@ -62,7 +62,7 @@ hl.window_rule({
 	workspace = 1,
 	focus_on_activate = true,
 	fullscreen = true,
-	tag = "game",
+	content = "game",
 })
 
 -- ===============================================
@@ -76,7 +76,7 @@ hl.window_rule({
 	float = true,
 	fullscreen = false,
 	size = "1600 900",
-	tag = "game",
+	content = "game",
 })
 
 -- ===============================================
@@ -97,7 +97,7 @@ hl.window_rule({
 	workspace = 1,
 	focus_on_activate = true,
 	fullscreen = true,
-	tag = "game",
+	content = "game",
 })
 
 -- ===============================================
